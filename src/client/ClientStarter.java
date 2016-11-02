@@ -2,6 +2,8 @@ package client;
 
 import java.util.Scanner;
 
+import packets.ChatMessage;
+
 import com.jmr.wrapper.client.Client;
 
 public class ClientStarter {
@@ -17,9 +19,19 @@ public class ClientStarter {
 //        }
         
         Scanner in = new Scanner(System.in);
-        while(true){ //cimpletely multithreaded no blocking 
-        	String s = in_nextline();
+        if (client.isConnected()){
+        	System.out.print("Enter username:"); ///if client connected get username
+        	String username = in.nextLine();
+        	System.out.print(username + ":");
+        	while(true){ //cimpletely multithreaded no blocking 
+            	String s = in.nextLine();
+//            	System.out.println(s);
+            	ChatMessage msg = new ChatMessage(username, s);
+            	client.getServerConnection().sendTcp(msg);
+            	
+            }
         }
+        
     }
 
     public static void main(String[] args) {
