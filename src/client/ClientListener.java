@@ -20,12 +20,10 @@ public class ClientListener implements SocketListener {
 
     @Override
     public void connected(Connection con) {
-    	System.out.println("Connected to chat!");
     }
 
     @Override
     public void disconnected(Connection con) {
-    	System.out.println("Disconnected from chat!");
     }
 
 }

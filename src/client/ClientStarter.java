@@ -20,7 +20,7 @@ public class ClientStarter {
         
         Scanner in = new Scanner(System.in);
         if (client.isConnected()){
-        	System.out.print("Enter username:");
+        	System.out.print("Enter username:"); ///if client connected get username
         	String username = in.nextLine();
         	System.out.print(username + ":");
         	while(true){ //cimpletely multithreaded no blocking 
