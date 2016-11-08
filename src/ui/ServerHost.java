@@ -22,7 +22,7 @@ public class ServerHost extends JPanel{
 		addLabelsAndContainers(frame);
 		packFrame(frame);
 		
-		ServerStarter server = new ServerStarter();
+		ServerStarter server = new ServerStarter(addressLabel);
 	}
 	
 	public void renderFrame(JFrame frame){
@@ -34,7 +34,7 @@ public class ServerHost extends JPanel{
 	}
 	
 	public void addLabelsAndContainers(JFrame frame){
-		addressLabel = new JLabel("OLAAAAAAAA");
+		addressLabel = new JLabel("");
 		a.add(addressLabel);
 		
 		Container x = new Container();
