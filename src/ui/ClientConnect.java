@@ -11,17 +11,26 @@ public class ClientConnect extends JPanel{
 	Container a = new Container();
 	JTextArea playersList;
 	JLabel addressLabel;
+	String ip = "";
+	String port = "";
 	
 	public ClientConnect(JFrame frame, Container overallFrame, String playerName){
 		this.frame = frame;
 		this.overallFrame = overallFrame;
 		this.playerName = playerName;
 		
+		while(ip == null || ip.isEmpty() || ip.length()==0){
+			ip = JOptionPane.showInputDialog("Enter IP of server");
+	    }
+		while(port == null || port.isEmpty() || port.length()==0){
+			port = JOptionPane.showInputDialog("Enter port number");
+	    }
+		
 		renderFrame(frame);
 		addLabelsAndContainers(frame);
 		packFrame(frame);
 		
-		ClientStarter client = new ClientStarter();
+		ClientStarter client = new ClientStarter(ip, port, addressLabel, playersList, playerName);
 	}
 	
 	public void renderFrame(JFrame frame){
@@ -33,7 +42,7 @@ public class ClientConnect extends JPanel{
 	}
 	
 	public void addLabelsAndContainers(JFrame frame){
-		addressLabel = new JLabel("OLAAAAAAAA");
+		addressLabel = new JLabel("");
 		a.add(addressLabel);
 		
 		Container x = new Container();

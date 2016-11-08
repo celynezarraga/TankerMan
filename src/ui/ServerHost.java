@@ -10,7 +10,7 @@ public class ServerHost extends JPanel{
 	String playerName;
 	Container overallFrame;
 	Container a = new Container();
-	JTextArea playersList;
+	JTextArea serverConsole;
 	JLabel addressLabel;
 	
 	public ServerHost(JFrame frame, Container overallFrame, String playerName){
@@ -22,7 +22,7 @@ public class ServerHost extends JPanel{
 		addLabelsAndContainers(frame);
 		packFrame(frame);
 		
-		ServerStarter server = new ServerStarter(addressLabel);
+		ServerStarter server = new ServerStarter(addressLabel, serverConsole);
 	}
 	
 	public void renderFrame(JFrame frame){
@@ -41,18 +41,18 @@ public class ServerHost extends JPanel{
 		x.setPreferredSize(new Dimension(1500,50));
 		a.add(x);
 		
-		JLabel playersLabel = new JLabel("PLAYERS");
+		JLabel playersLabel = new JLabel("CONSOLE");
 		a.add(playersLabel);
 		
 		Container x2 = new Container();
 		x2.setPreferredSize(new Dimension(1500,10));
 		a.add(x2);
 		
-		playersList = new JTextArea(450,225);
-		playersList.setEditable(false);
-		playersList.setLineWrap(true);
-		playersList.setWrapStyleWord(true);
-		JScrollPane areaScrollPane1 = new JScrollPane(playersList);
+		serverConsole = new JTextArea(450,225);
+		serverConsole.setEditable(false);
+		serverConsole.setLineWrap(true);
+		serverConsole.setWrapStyleWord(true);
+		JScrollPane areaScrollPane1 = new JScrollPane(serverConsole);
 		areaScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		areaScrollPane1.setPreferredSize(new Dimension(450, 225));
 		a.add(areaScrollPane1);

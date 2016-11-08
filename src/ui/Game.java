@@ -58,7 +58,7 @@ public class Game extends JPanel{
 					public void actionPerformed(ActionEvent arg0) {
 						// TODO Auto-generated method stub
 						System.out.println("connect to an existing server");
-						ClientConnect client = new ClientConnect(frame,overallFrame,playerName);
+						ClientConnect client = new ClientConnect(frame,overallFrame, playerName);
 					}	
 				});
 				

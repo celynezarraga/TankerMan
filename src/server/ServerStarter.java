@@ -4,6 +4,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import javax.swing.JLabel;
+import javax.swing.JTextArea;
 
 import com.jmr.wrapper.common.exceptions.NNCantStartServer;
 import com.jmr.wrapper.server.Server;
@@ -13,13 +14,13 @@ public final class ServerStarter {
 	private Server server;
 	String ip;
 	
-	public ServerStarter (JLabel addressLabel){
+	public ServerStarter (JLabel addressLabel, JTextArea serverConsole){
 		try {
 			
 			server = new Server(1337,1337);
-			server.setListener(new ServerListener());
+			server.setListener(new ServerListener(serverConsole));
 			if (server.isConnected()){
-				System.out.println("Server has strated");
+				serverConsole.setText(serverConsole.getText().concat("Server has started.\n"));
 				try{
 					ip = InetAddress.getLocalHost().toString();
 					String[] ipAdd = ip.split("\\/");
