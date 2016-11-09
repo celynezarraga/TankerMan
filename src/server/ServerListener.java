@@ -23,6 +23,7 @@ public class ServerListener implements SocketListener {
     	
 //    	 whenever a client connects
     	 ConnectionManager.getInstance().addConnection(con); //when a new client connect, add connection to the array
+    	 serverConsole.setText(serverConsole.getText().concat("Size" + ConnectionManager.getInstance().getConnections().size() + "\n"));
 //    	 for (Connection c: ConnectionManager.getInstance().getConnections()){
 // 			c.sendTcp(new ChatMessage("", "Client has connected")); //send all messages to connected clients
 // 		}

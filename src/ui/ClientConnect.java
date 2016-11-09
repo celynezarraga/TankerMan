@@ -31,6 +31,10 @@ public class ClientConnect extends JPanel{
 		packFrame(frame);
 		
 		ClientStarter client = new ClientStarter(ip, port, addressLabel, playersList, playerName);
+		
+		if(!client.connected()){
+			ClientConnect cConnect = new ClientConnect(frame,overallFrame, playerName);
+		}
 	}
 	
 	public void renderFrame(JFrame frame){
