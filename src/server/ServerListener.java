@@ -19,11 +19,16 @@ public class ServerListener implements SocketListener {
     @Override
     public void connected(Connection con) {
 //    	 System.out.println("New client connected.");
-    	serverConsole.setText(serverConsole.getText().concat("New client connected." + con.getId() + "\n"));
-    	
-//    	 whenever a client connects
-    	 ConnectionManager.getInstance().addConnection(con); //when a new client connect, add connection to the array
-    	 serverConsole.setText(serverConsole.getText().concat("Size" + ConnectionManager.getInstance().getConnections().size() + "\n"));
+    	 if(!(ConnectionManager.getInstance().getConnections().size()==4)){
+    		 serverConsole.setText(serverConsole.getText().concat("New client connected." + con.getId() + "\n"));
+    	    	
+//        	 whenever a client connects
+        	 ConnectionManager.getInstance().addConnection(con); //when a new client connect, add connection to the array
+        	 serverConsole.setText(serverConsole.getText().concat("Size" + ConnectionManager.getInstance().getConnections().size() + "\n"));
+    	 }
+    	 else{
+    		 con.close();
+    	 }
 //    	 for (Connection c: ConnectionManager.getInstance().getConnections()){
 // 			c.sendTcp(new ChatMessage("", "Client has connected")); //send all messages to connected clients
 // 		}
