@@ -33,10 +33,10 @@ public class ClientStarter {
         	//PlayersList.setText(client.getServerConnection().getId() + "");
         	
         	//if(client.getServerConnection().getId() < 2){
-        		//addressLabel.setText(playerName + " connected to " + ip + ":" + port);
+        		addressLabel.setText(playerName + " connected to " + ip + ":" + port);
         	//}
         	//else{
-        		client.close();
+//        		client.close();
         	//}
         	
         	
