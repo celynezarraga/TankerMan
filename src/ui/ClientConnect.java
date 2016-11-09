@@ -15,7 +15,7 @@ public class ClientConnect extends JPanel{
 	String port = "";
 
 	
-	chatUI ui_chat = new chatUI();
+	
 	
 	
 	public ClientConnect(JFrame frame, Container overallFrame, String playerName){
@@ -37,6 +37,7 @@ public class ClientConnect extends JPanel{
 		packFrame(frame);
 		
 		ClientStarter client = new ClientStarter(ip, port, addressLabel, playersList, playerName);
+		
 		
 		if(!client.connected()){
 			ClientConnect cConnect = new ClientConnect(frame,overallFrame, playerName);
@@ -81,10 +82,6 @@ public class ClientConnect extends JPanel{
 	public void packFrame(JFrame frame){
 		overallFrame.removeAll();
 		overallFrame.add(a);
-		
-		overallFrame.add(ui_chat.display());
-
-		
 		frame.pack();
 	}
 	

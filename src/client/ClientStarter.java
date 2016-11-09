@@ -8,6 +8,7 @@ import javax.swing.JTextArea;
 
 import packets.ChatMessage;
 import server.ConnectionManager;
+import ui.chatUI;
 
 import com.jmr.wrapper.client.Client;
 import com.jmr.wrapper.common.Connection;
@@ -26,6 +27,9 @@ public class ClientStarter {
         
 //        Scanner in = new Scanner(System.in);
         if (client.isConnected()){
+        	chatUI ui_chat = new chatUI(client);
+    		ui_chat.display( playerName);
+        	
 //        	System.out.print("Enter username:"); ///if client connected get username
 //        	String username = in.nextLine();
 //        	System.out.print(username + ":");
@@ -43,10 +47,10 @@ public class ClientStarter {
 //        	System.out.println("here");
 //        	while(true){ //completely multithreaded no blocking 
 //            	String s = in.nextLine();
-////            	System.out.println(s);
+//            	System.out.println(s);
 //            	ChatMessage msg = new ChatMessage(playerName, s);
 //            	client.getServerConnection().sendTcp(msg);
-            	
+//            	
 //            }
         	
         	

@@ -2,6 +2,7 @@ package client;
 
 import packets.ChatMessage;
 import server.ConnectionManager;
+import ui.chatUI;
 
 import com.jmr.wrapper.common.Connection;
 import com.jmr.wrapper.common.listener.SocketListener;
@@ -14,7 +15,10 @@ public class ClientListener implements SocketListener {
     	if (object instanceof ChatMessage){
     		ChatMessage msg = (ChatMessage) object;
     		System.out.println(msg.username + ":" +msg.message); 
+        	ConnectionManager.getInstance().addMessage(msg.username + ":" +msg.message);
+//       	 ConnectionManager.getInstance().addConnection(con); //when a new client connect, add connection to the array
     		
+
     	}
     }
 
