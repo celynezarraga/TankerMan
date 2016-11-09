@@ -17,7 +17,7 @@ public class ClientListener implements SocketListener {
     		System.out.println(msg.username + ":" +msg.message); 
         	ConnectionManager.getInstance().addMessage(msg.username + ":" +msg.message);
 //       	 ConnectionManager.getInstance().addConnection(con); //when a new client connect, add connection to the array
-    		
+    		//
 
     	}
     }
