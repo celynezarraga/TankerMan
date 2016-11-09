@@ -13,6 +13,10 @@ public class ClientConnect extends JPanel{
 	JLabel addressLabel;
 	String ip = "";
 	String port = "";
+
+	
+	chatUI ui_chat = new chatUI();
+	
 	
 	public ClientConnect(JFrame frame, Container overallFrame, String playerName){
 		this.frame = frame;
@@ -26,8 +30,10 @@ public class ClientConnect extends JPanel{
 			port = JOptionPane.showInputDialog("Enter port number");
 	    }
 		
+		
+		
 		renderFrame(frame);
-		addLabelsAndContainers(frame);
+		addLabelsAndContainers(frame);		
 		packFrame(frame);
 		
 		ClientStarter client = new ClientStarter(ip, port, addressLabel, playersList, playerName);
@@ -68,11 +74,17 @@ public class ClientConnect extends JPanel{
 		areaScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		areaScrollPane1.setPreferredSize(new Dimension(450, 225));
 		a.add(areaScrollPane1);
+		
+		
 	}
 	
 	public void packFrame(JFrame frame){
 		overallFrame.removeAll();
 		overallFrame.add(a);
+		
+		overallFrame.add(ui_chat.display());
+
+		
 		frame.pack();
 	}
 	
