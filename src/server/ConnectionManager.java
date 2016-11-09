@@ -1,7 +1,6 @@
 package server;
 
-import java.util.ArrayList;
-
+import java.util.*;
 import com.jmr.wrapper.common.Connection;
 
 
@@ -10,6 +9,7 @@ public class ConnectionManager {
 //	once instance of the class itself
 	
 	private ArrayList<Connection> connections = new ArrayList<Connection>();
+	private HashMap<Connection, String> players = new HashMap<Connection, String>();
 	
 	private ConnectionManager(){
 		
