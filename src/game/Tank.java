@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.*;
 
 public class Tank{
 	private int hp;
@@ -8,9 +9,11 @@ public class Tank{
 	private boolean isAlive;
 	private int cooldown;
 	private String IP;
-	private String color;
+	private Color color;
+	private String name;
+	private int score;
 	
-	public Tank(int x,int y,String IP,String color){
+	public Tank(int x,int y,String IP,Color color, String name){
 		this.hp = 3;
 		this.x = x;
 		this.y = y;
@@ -18,13 +21,23 @@ public class Tank{
 		this.cooldown = 0;
 		this.IP=IP;
 		this.color = color;
+		this.name = name;
+		this.score = 0;
+	}
+	
+	public String getName(){
+		return this.name;
+	}
+	
+	public int getScore(){
+		return this.score;
 	}
 	
 	public int getHp(){
 		return this.hp;
 	}
 	
-	public String getColor(){
+	public Color getColor(){
 		return this.color;
 	}
 	
