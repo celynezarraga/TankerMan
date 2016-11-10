@@ -16,10 +16,12 @@ import com.jmr.wrapper.common.Connection;
 public class ClientStarter {
 
     private final Client client;
+    JTextArea chatBox;
 
     public ClientStarter(String ip, String port, JLabel addressLabel, JTextArea PlayersList, String playerName) {
         client = new Client(ip, Integer.parseInt(port), Integer.parseInt(port));
-        client.setListener(new ClientListener());
+        chatUI ui_chat = new chatUI(client, playerName);
+        client.setListener(new ClientListener(ui_chat));
         client.connect();
 //        if (client.isConnected()) {
 //            System.out.println("Connected to the server.");
@@ -27,8 +29,9 @@ public class ClientStarter {
         
 //        Scanner in = new Scanner(System.in);
         if (client.isConnected()){
-        	chatUI ui_chat = new chatUI(client);
-    		ui_chat.display( playerName);
+//        	chatUI ui_chat = new chatUI(client);
+    		
+    		
         	
 //        	System.out.print("Enter username:"); ///if client connected get username
 //        	String username = in.nextLine();
@@ -52,6 +55,7 @@ public class ClientStarter {
 //            	client.getServerConnection().sendTcp(msg);
 //            	
 //            }
+        		
         	
         	
         }

@@ -38,14 +38,16 @@ public class chatUI {
 	    JFrame      newFrame    = new JFrame(appName);
 	    JButton     sendMessage;
 	    JTextField  messageBox;
-	    JTextArea   chatBox;
+	    public JTextArea   chatBox;
 	    JTextField  playerNameChooser;
 	    JFrame      preFrame;
-	    String playerName;
+	    public String playerName;
 	    Client client;
+	    int msglen;
 	    
-	    public chatUI(Client client){
-	    	this.client = client;	    	
+	    public chatUI(Client client, String playerName ){
+	    	this.client = client;
+	    	this.playerName = playerName;
 	    }
 	    
     public void display(  String playerName) {
@@ -93,30 +95,23 @@ public class chatUI {
         newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         newFrame.setSize(470, 300);
         newFrame.setVisible(true);
+        
+        
+        
+       
     }
 
     class sendMessageButtonListener implements ActionListener {
     	
         public void actionPerformed(ActionEvent event) {
             if (messageBox.getText().length() < 1) {
-                // do nothing        	            	
+                // do nothing        	            
             } else if (messageBox.getText().equals(".clear")) {
                 chatBox.setText("Cleared all messages\n");
                 messageBox.setText("");
             } else {
             	ChatMessage msg = new ChatMessage(playerName, messageBox.getText());
             	client.getServerConnection().sendTcp(msg);
-//            	ConnectionManager.getInstance().addMessage(playerName + ":" + messageBox.getText());
-//            	
-            	 ArrayList<String> messages = new  ArrayList<String> (ConnectionManager.getInstance().getMessages());
-            	 chatBox.setText("");
-            	 for(String W: messages)
-            		 chatBox.append(W + "\n");
-
-            	
-            	
-//                chatBox.append("<" + playerName + ">:  " + messageBox.getText()
-//                        + "\n");
                 messageBox.setText("");
             }
             messageBox.requestFocusInWindow();
