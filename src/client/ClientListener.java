@@ -15,7 +15,7 @@ import com.jmr.wrapper.common.listener.SocketListener;
 public class ClientListener implements SocketListener {
 	
 	JTextArea chatBox;
-	chatUI ui_chat;
+	static chatUI ui_chat;
 	public ClientListener(chatUI ui_chat){
 //		this.chatBox = ui_chat.chatBox;
 		this.ui_chat = ui_chat;
@@ -36,11 +36,15 @@ public class ClientListener implements SocketListener {
     @Override
     public void connected(Connection con) {
     	System.out.println("HELLO");
-    	ui_chat.display( ui_chat.playerName);
+    	ui_chat.display(ui_chat.playerName);
     }
 
     @Override
     public void disconnected(Connection con) {
+    }
+    public static void exposeUI(){
+    	ui_chat.display( ui_chat.playerName);
+
     }
 
 }
