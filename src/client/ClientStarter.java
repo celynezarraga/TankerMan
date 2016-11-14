@@ -40,10 +40,7 @@ public class ClientStarter {
         	connectionInfoField.setText(connectionInfoField.getText().concat(playerName + " connected to " + ip + ":" + port));
         	System.out.println(playerName);
 			System.out.println(ip);
-			System.out.println(port);
-        	
-        		
-        	
+			System.out.println(port);       	        		       	
         	
         }
         

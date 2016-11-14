@@ -30,6 +30,7 @@ public class ServerListener implements SocketListener {
         	 serverConsole.setText(serverConsole.getText().concat("Size" + ConnectionManager.getInstance().getConnections().size() + "\n"));
     	 }
     	 else{
+    		 serverConsole.setText(serverConsole.getText().concat("Server already full. Game can be starter" + "\n"));
     		 con.close();
     	 }
 //    	 for (Connection c: ConnectionManager.getInstance().getConnections()){
