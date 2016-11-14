@@ -6,6 +6,8 @@ import java.net.UnknownHostException;
 import javax.swing.JLabel;
 import javax.swing.JTextArea;
 
+import org.newdawn.slick.gui.TextField;
+
 import com.jmr.wrapper.common.exceptions.NNCantStartServer;
 import com.jmr.wrapper.server.Server;
 
@@ -14,7 +16,7 @@ public final class ServerStarter {
 	private Server server;
 	String ip;
 	
-	public ServerStarter (JLabel addressLabel, JTextArea serverConsole){
+	public ServerStarter ( TextField serverConsole, TextField ipPortStringfield){
 		try {
 			
 			server = new Server(1337,1337);
@@ -24,7 +26,7 @@ public final class ServerStarter {
 				try{
 					ip = InetAddress.getLocalHost().toString();
 					String[] ipAdd = ip.split("\\/");
-					addressLabel.setText("Now serving at " + ipAdd[ipAdd.length-1] + " Port: " + server.getUdpPort());
+					ipPortStringfield.setText("Now serving at " + ipAdd[ipAdd.length-1] + " Port: " + server.getUdpPort());
 				}catch(UnknownHostException e){
 					e.printStackTrace();
 				}

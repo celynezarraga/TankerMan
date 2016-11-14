@@ -4,15 +4,17 @@ import packets.ChatMessage;
 
 import javax.swing.JTextArea;
 
+import org.newdawn.slick.gui.TextField;
+
 import com.jmr.wrapper.common.Connection;
 import com.jmr.wrapper.common.listener.SocketListener;
 
 
 public class ServerListener implements SocketListener {
 
-	JTextArea serverConsole;
+	TextField serverConsole;
 	
-   public ServerListener(JTextArea serverConsole){
+   public ServerListener(TextField serverConsole){
 	   this.serverConsole = serverConsole;
    }
 
@@ -21,6 +23,7 @@ public class ServerListener implements SocketListener {
 //    	 System.out.println("New client connected.");
     	 if(!(ConnectionManager.getInstance().getConnections().size()==4)){
     		 serverConsole.setText(serverConsole.getText().concat("New client connected." + con.getId() + "\n"));
+    		 System.out.println("New client connected." );
     	    	
 //        	 whenever a client connects
         	 ConnectionManager.getInstance().addConnection(con); //when a new client connect, add connection to the array
