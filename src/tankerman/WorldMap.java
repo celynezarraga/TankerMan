@@ -3,6 +3,7 @@ package tankerman;
 import org.newdawn.slick.*;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.*;
+import org.newdawn.slick.tiled.TiledMap;
 
 public class WorldMap extends BasicGameState{
 
@@ -15,6 +16,9 @@ public class WorldMap extends BasicGameState{
 	float charPositionY = 0;
 	float shiftX = charPositionX + 450;
 	float shiftY = charPositionY + 300;
+	
+	int cameraX = 0;
+	int cameraY = 0;
 	
 	public WorldMap(int worldmap) {
 	}
@@ -35,9 +39,8 @@ public class WorldMap extends BasicGameState{
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		map.draw(charPositionX, charPositionY);
-		character.draw(shiftX, shiftY);
-		
+		map.draw(cameraX, cameraY);
+		character.draw(-charPositionX, -charPositionY);
 		g.drawString("CharacterX: " + charPositionX + " CharY: " + charPositionY , 400, 20);
 	}
 
@@ -47,7 +50,7 @@ public class WorldMap extends BasicGameState{
 		if(input.isKeyDown(Input.KEY_UP)){
 			character = moveUp;
 			charPositionY += delta * 1f;
-				if(charPositionY > 1208){
+				if(charPositionY > 0){
 					charPositionY -= delta * 1f;
 				}
 		}
@@ -55,7 +58,7 @@ public class WorldMap extends BasicGameState{
 		if(input.isKeyDown(Input.KEY_DOWN)){
 			character = moveDown;
 			charPositionY -= delta * 1f;
-				if(charPositionY < -1208){
+				if(charPositionY < -600){
 					charPositionY += delta * 1f;
 				}
 		}
@@ -63,7 +66,7 @@ public class WorldMap extends BasicGameState{
 		if(input.isKeyDown(Input.KEY_LEFT)){
 			character = moveLeft;
 			charPositionX += delta * 1f;
-				if(charPositionX > 1208){
+				if(charPositionX > 0){
 					charPositionX -= delta * 1f;
 				}
 		}
@@ -71,7 +74,7 @@ public class WorldMap extends BasicGameState{
 		if(input.isKeyDown(Input.KEY_RIGHT)){
 			character = moveRight;
 			charPositionX -= delta * 1f;
-				if(charPositionX < -1208){
+				if(charPositionX < -900){
 					charPositionX += delta * 1f;
 				}
 		}
