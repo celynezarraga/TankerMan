@@ -20,6 +20,7 @@ public class ClientStarter {
 
     private final Client client;
     JTextArea chatBox;
+    private String playerName;
 
     public ClientStarter(String ip, String port, String playerName,TextField connectionInfoField, TextField startGamebtn) {
         client = new Client(ip, Integer.parseInt(port), Integer.parseInt(port));
@@ -31,6 +32,7 @@ public class ClientStarter {
 //        client.setListener(new ClientListener());
 
         client.connect();
+        this.setPlayerName(playerName);
         
 //        if (client.isConnected()) {
 //            System.out.println("Connected to the server.");
@@ -55,5 +57,13 @@ public class ClientStarter {
     public Boolean connected(){
     	return client.isConnected();
     }
+
+	public String getPlayerName() {
+		return playerName;
+	}
+
+	public void setPlayerName(String playerName) {
+		this.playerName = playerName;
+	}
 
 }

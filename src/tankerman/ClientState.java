@@ -132,6 +132,7 @@ public class ClientState extends BasicGameState{
 				if(ClientListener.startGame==true){ 
 					System.out.println("G NA");
 					sbg.enterState(1); // enter server state
+					new WorldMap(client, username);
 				
 				}
 			}

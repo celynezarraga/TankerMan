@@ -1,9 +1,14 @@
 package tankerman;
 
+import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
-import org.newdawn.slick.SlickException;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.*;
 import org.newdawn.slick.tiled.TiledMap;
+
+import client.ClientStarter;
+
+import com.jmr.wrapper.client.Client;
 
 public class WorldMap extends BasicGameState{
 
@@ -11,6 +16,9 @@ public class WorldMap extends BasicGameState{
 	private TiledMap map;
 	
 	int[] duration = {200,200};
+	//
+	float posX = 0;
+	float posY = 0;
 	
 	int charPositionX = 1;
 	int charPositionY = 2;
@@ -25,10 +33,16 @@ public class WorldMap extends BasicGameState{
 	boolean[][] blocked;
 	
 	/// players
-	private int[] players = new int[20];
+	TextField chatMsgsTf;
+	TextField chatFieldTf;
 
 	
-	public WorldMap(int worldmap) {
+	
+	public WorldMap(int worldmap ) {
+	}
+	
+	public WorldMap(ClientStarter client, String username ) {
+		System.out.println(client.getPlayerName());
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
@@ -45,6 +59,16 @@ public class WorldMap extends BasicGameState{
 		moveRight = new Animation(walkRight,duration,false);
 		character = moveDown;
 		
+
+		
+		//chat		
+		chatMsgsTf = new TextField(gc, gc.getDefaultFont(), 748, 0,243,550);
+		chatMsgsTf.setBorderColor(Color.white);
+		chatFieldTf = new TextField(gc, gc.getDefaultFont(), 748, 500,243,100);
+		chatFieldTf.setBorderColor(Color.red);
+		chatFieldTf.setCursorVisible(true);
+		
+		
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
@@ -52,9 +76,22 @@ public class WorldMap extends BasicGameState{
 		map.render(0,0);
 		character.draw(charPositionX * 30, charPositionY * 30);
 		g.drawString("CharacterX: " + charPositionX *30 + " CharY: " + charPositionY*30 , 400, 20);
+		
+//		chat
+		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 650);
+
+		chatMsgsTf.deactivate();
+		chatMsgsTf.render(gc, g);
+		chatFieldTf.render(gc, g);
+		chatFieldTf.setCursorVisible(true);
+		chatFieldTf.setFocus(true);
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+		//chat
+		this.posX = Mouse.getX();
+		this.posY = Mouse.getY();
+		//
 		Input input = gc.getInput();
 		int objectLayer = map.getLayerIndex("Objects");
 		map.getTileId(0,0,objectLayer);
@@ -88,6 +125,15 @@ public class WorldMap extends BasicGameState{
 			if(map.getTileId(charPositionX,charPositionY , objectLayer) != 0){
 				charPositionX --;
 			}
+		}
+		
+		////chat
+//		, 748, 500,243,100);
+
+		if((posX>748 && posX<1000) && (posY>99 && posY<200)){
+			if(Mouse.isButtonDown(0)){
+					System.out.println("Yow");
+				}
 		}
 	}
 
