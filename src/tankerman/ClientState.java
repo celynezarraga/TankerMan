@@ -19,6 +19,7 @@ public class ClientState extends BasicGameState{
 	private TextField serverIpfield;
 	private TextField serverPortfield;
 	private TextField connectionInfoField;
+	private TextField startGamebtn;
 
 
 	public static String username;
@@ -30,6 +31,11 @@ public class ClientState extends BasicGameState{
 	float posY = 0;
 	float shiftX = posX + 450;
 	float shiftY = posY + 300;
+	//
+	
+	
+	//
+	Boolean connected = false;
 	//
 
 
@@ -49,6 +55,8 @@ public class ClientState extends BasicGameState{
 		serverPortfield.setBorderColor(Color.white);
 		connectionInfoField = new TextField(arg0, arg0.getDefaultFont(), 20, 600,800,20);
 //		serverPortfield.setBorderColor(Color.white);
+		startGamebtn = new TextField(arg0, arg0.getDefaultFont(), 20, 300,800,20);
+		startGamebtn.setBorderColor(Color.white);
 		
 	}
 
@@ -62,19 +70,29 @@ public class ClientState extends BasicGameState{
 		
 		arg2.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 20);
 		//
-		
-		
-		arg2.drawString("Enter username", 100, 180);
-		namefield.render(arg0, arg2);
-		namefield.setCursorVisible(true);
-		arg2.drawString("Enter Server IP", 100, 280);
-		serverIpfield.render(arg0, arg2);
-		serverIpfield.setCursorVisible(true);
-		arg2.drawString("Enter Server Port", 100, 380);
-		serverPortfield.render(arg0, arg2);
-		serverPortfield.setCursorVisible(true);
-		arg2.drawString("PRESS ENTER TO CREATE CONNECTION", 285, 130);
 		connectionInfoField.render(arg0, arg2);
+		if (!connected){
+			arg2.drawString("Enter username", 100, 180);
+			namefield.render(arg0, arg2);
+			namefield.setCursorVisible(true);
+			arg2.drawString("Enter Server IP", 100, 280);
+			serverIpfield.render(arg0, arg2);
+			serverIpfield.setCursorVisible(true);
+			arg2.drawString("Enter Server Port", 100, 380);
+			serverPortfield.render(arg0, arg2);
+			serverPortfield.setCursorVisible(true);
+			arg2.drawString("PRESS ENTER TO CREATE CONNECTION", 285, 130);
+			
+			
+		}else{
+			startGamebtn.render(arg0, arg2);
+		}
+		
+		
+		
+		
+
+		
 		
 	}
 
@@ -110,9 +128,10 @@ public class ClientState extends BasicGameState{
 			serverIp = serverIpfield.getText();
 			serverport = serverPortfield.getText();
 			
-			if((username != "" && !username.isEmpty()) || (serverIp != "" && !serverIp.isEmpty()) || (serverport != "" && !serverport.isEmpty()) ) {
+			if((username != "" && !username.isEmpty()) && (serverIp != "" && !serverIp.isEmpty()) && (serverport != "" && !serverport.isEmpty()) ) {
 //				ClientConnect client = new ClientConnect(username,serverIp,serverport );
-				ClientStarter client = new ClientStarter(serverIp, serverport, username, connectionInfoField);
+				ClientStarter client = new ClientStarter(serverIp, serverport, username, connectionInfoField, startGamebtn);
+				connected = true;
 //				arg1.enterState(5); // 5 chatstate
 //				System.out.println(username);
 //				System.out.println(serverIp);

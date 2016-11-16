@@ -21,11 +21,13 @@ public class ClientStarter {
     private final Client client;
     JTextArea chatBox;
 
-    public ClientStarter(String ip, String port, String playerName,TextField connectionInfoField) {
+    public ClientStarter(String ip, String port, String playerName,TextField connectionInfoField, TextField startGamebtn) {
         client = new Client(ip, Integer.parseInt(port), Integer.parseInt(port));
 //        chatUI ui_chat = new chatUI(client, playerName);
-//        client.setListener(new ClientListener(ui_chat));
-        client.setListener(new ClientListener());
+//        client.setListener(new ClientListener(ui_chat)); //dont delete this is needed
+        client.setListener(new ClientListener(startGamebtn));
+
+//        client.setListener(new ClientListener());
 
         client.connect();
         
