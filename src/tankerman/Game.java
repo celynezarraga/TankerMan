@@ -8,18 +8,29 @@ public class Game extends StateBasedGame{
 	public static final String gameName = "TankerMan";
 	public static final int startMenu = 0;
 	public static final int worldMap = 1;
+	public static final int veryfirstMenu = 2;
+	public static final int serverState = 3;
+	public static final int clientState = 4;
+
+	
+
 	
 	public Game(String gameName) {
 		super(gameName);
+		this.addState(new FirstMenu(veryfirstMenu));
+		this.addState(new ServerState(serverState));
+		this.addState(new ClientState(clientState));
 		this.addState(new MainMenu(startMenu));
 		this.addState(new WorldMap(worldMap));
 	}
 	
 	public void initStatesList(GameContainer gc) throws SlickException{
 		gc.setShowFPS(false);
+		this.getState(veryfirstMenu).init(gc, this);
+		
 		this.getState(startMenu).init(gc, this);
 		this.getState(worldMap).init(gc, this);
-		this.enterState(startMenu);
+		this.enterState(veryfirstMenu);
 	}
 
 	public static void main(String[] args) {

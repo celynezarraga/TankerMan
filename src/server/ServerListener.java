@@ -1,8 +1,11 @@
 package server;
 
 import packets.ChatMessage;
+import packets.ConnectionNumber;
 
 import javax.swing.JTextArea;
+
+import org.newdawn.slick.gui.TextField;
 
 import com.jmr.wrapper.common.Connection;
 import com.jmr.wrapper.common.listener.SocketListener;
@@ -10,28 +13,38 @@ import com.jmr.wrapper.common.listener.SocketListener;
 
 public class ServerListener implements SocketListener {
 
-	JTextArea serverConsole;
+	TextField serverConsole;
 	
-   public ServerListener(JTextArea serverConsole){
+   public ServerListener(TextField serverConsole){
 	   this.serverConsole = serverConsole;
    }
 
     @Override
     public void connected(Connection con) {
 //    	 System.out.println("New client connected.");
-    	 if(!(ConnectionManager.getInstance().getConnections().size()==4)){
+    	
+    	 
+//    	 if(!(ConnectionManager.getInstance().getConnections().size()==2)){
     		 serverConsole.setText(serverConsole.getText().concat("New client connected." + con.getId() + "\n"));
+    		 System.out.println("New client connected." );
     	    	
 //        	 whenever a client connects
         	 ConnectionManager.getInstance().addConnection(con); //when a new client connect, add connection to the array
         	 serverConsole.setText(serverConsole.getText().concat("Size" + ConnectionManager.getInstance().getConnections().size() + "\n"));
-    	 }
-    	 else{
-    		 con.close();
-    	 }
-//    	 for (Connection c: ConnectionManager.getInstance().getConnections()){
-// 			c.sendTcp(new ChatMessage("", "Client has connected")); //send all messages to connected clients
-// 		}
+        	 
+        	 
+        	 if(ConnectionManager.getInstance().getConnections().size()==2){
+    		 
+        		 serverConsole.setText(serverConsole.getText().concat("Server already full. Game can be starter" + "\n"));
+    		 
+//    		 con.close();
+        	 }
+    	 
+	    	 for (Connection c: ConnectionManager.getInstance().getConnections()){
+		  			c.sendTcp(new ConnectionNumber(ConnectionManager.getInstance().getConnections().size())); //send all messages to connected clients
+		  	 }
+    	 
+    	
     }
 
     @Override

@@ -13,27 +13,22 @@ public class ClientConnect extends JPanel{
 	JLabel addressLabel;
 	String ip = "";
 	String port = "";
+
 	
-	public ClientConnect(JFrame frame, Container overallFrame, String playerName){
+	
+	
+	
+	public ClientConnect(String playerName, String ip, String port){
 		this.frame = frame;
 		this.overallFrame = overallFrame;
 		this.playerName = playerName;
 		
-		while(ip == null || ip.isEmpty() || ip.length()==0){
-			ip = JOptionPane.showInputDialog("Enter IP of server");
-	    }
-		while(port == null || port.isEmpty() || port.length()==0){
-			port = JOptionPane.showInputDialog("Enter port number");
-	    }
 		
-		renderFrame(frame);
-		addLabelsAndContainers(frame);
-		packFrame(frame);
+		ClientStarter client = new ClientStarter(ip, port, playerName);
 		
-		ClientStarter client = new ClientStarter(ip, port, addressLabel, playersList, playerName);
 		
 		if(!client.connected()){
-			ClientConnect cConnect = new ClientConnect(frame,overallFrame, playerName);
+			ClientConnect cConnect = new ClientConnect(playerName, ip, port);
 		}
 	}
 	
@@ -68,6 +63,8 @@ public class ClientConnect extends JPanel{
 		areaScrollPane1.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
 		areaScrollPane1.setPreferredSize(new Dimension(450, 225));
 		a.add(areaScrollPane1);
+		
+		
 	}
 	
 	public void packFrame(JFrame frame){

@@ -9,8 +9,9 @@ public class ConnectionManager {
 //	once instance of the class itself
 	
 	private ArrayList<Connection> connections = new ArrayList<Connection>();
+
 	private HashMap<Connection, String> players = new HashMap<Connection, String>();
-	
+
 	private ConnectionManager(){
 		
 	}
@@ -26,6 +27,7 @@ public class ConnectionManager {
 	public ArrayList<Connection> getConnections(){
 		return connections; 
 	}
+	
 	
 	
 	public static ConnectionManager getInstance(){

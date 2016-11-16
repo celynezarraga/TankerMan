@@ -24,6 +24,10 @@ public class WorldMap extends BasicGameState{
 	
 	boolean[][] blocked;
 	
+	/// players
+	private int[] players = new int[20];
+
+	
 	public WorldMap(int worldmap) {
 	}
 
