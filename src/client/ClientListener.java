@@ -22,11 +22,16 @@ public class ClientListener implements SocketListener {
 	JTextArea chatBox;
 //	static chatUI ui_chat;
 	TextField startGamebtn;
+	TextField chatMsgsTf;
+	TextField chatFieldTf;
+	
 	public static Boolean startGame = false;;
 	
-	public ClientListener(TextField startGamebtn){
+	public ClientListener(TextField startGamebtn, TextField chatFieldTf, TextField chatMsgsTf){
 //		this.ui_chat = ui_chat;
 		this.startGamebtn =startGamebtn; 
+		this.chatFieldTf = chatFieldTf;
+		this.chatMsgsTf = chatMsgsTf;
 	   }
 
 
@@ -35,6 +40,7 @@ public class ClientListener implements SocketListener {
     	if (object instanceof ChatMessage){
     		ChatMessage msg = (ChatMessage) object;
     		System.out.println(msg.username + ":" +msg.message); 
+    		chatMsgsTf.setText(chatMsgsTf.getText().concat(msg.username + ":" +msg.message));
 //    		ui_chat.chatBox.append(msg.username + ":" +msg.message + "\n");
     	}
     	if (object instanceof ConnectionNumber){
@@ -44,11 +50,10 @@ public class ClientListener implements SocketListener {
     			startGamebtn.setText(startGamebtn.getText().concat("PLAYERS COMPLETE. CLICK TO START GAME"));
     			System.out.println("PLAYERS COMPLETE START GAME");
     			startGame = true;
-    		}
-    		
-        	
-
-    		
+    			 for (Connection c: ConnectionManager.getInstance().getConnections()){
+    				c.sendTcp(new ChatMessage("", "GAME HAS STARTED"));
+    			}
+    		} 
     	}
     }
 

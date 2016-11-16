@@ -21,13 +21,15 @@ public class ClientStarter {
     private final Client client;
     JTextArea chatBox;
     private String playerName;
+    private Boolean initTrue;
 
-    public ClientStarter(String ip, String port, String playerName,TextField connectionInfoField, TextField startGamebtn) {
+    public ClientStarter(String ip, String port, String playerName,TextField connectionInfoField, 
+    		TextField startGamebtn, TextField chatFieldTf, TextField chatMsgsTf) {
         client = new Client(ip, Integer.parseInt(port), Integer.parseInt(port));
         
 //        chatUI ui_chat = new chatUI(client, playerName);
 //        client.setListener(new ClientListener(ui_chat)); //dont delete this is needed
-        client.setListener(new ClientListener(startGamebtn));
+        client.setListener(new ClientListener(startGamebtn, chatFieldTf, chatMsgsTf));
 
 //        client.setListener(new ClientListener());
 
@@ -65,5 +67,7 @@ public class ClientStarter {
 	public void setPlayerName(String playerName) {
 		this.playerName = playerName;
 	}
+	
+	
 
 }
