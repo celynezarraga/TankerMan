@@ -22,33 +22,28 @@ public class ServerListener implements SocketListener {
     @Override
     public void connected(Connection con) {
 //    	 System.out.println("New client connected.");
-    	int conenctionsNum = ConnectionManager.getInstance().getConnections().size();
-    	 if(conenctionsNum == 2){
-    		 serverConsole.setText(serverConsole.getText().concat("Server already full. Game can be starter" + "\n"));
-    		 for (Connection c: ConnectionManager.getInstance().getConnections()){
-    	  			c.sendTcp(new ConnectionNumber(conenctionsNum)); //send all messages to connected clients
-    	  	 }
-    	 }
+    	
     	 
-    	 if(!(conenctionsNum==2)){
+//    	 if(!(ConnectionManager.getInstance().getConnections().size()==2)){
     		 serverConsole.setText(serverConsole.getText().concat("New client connected." + con.getId() + "\n"));
     		 System.out.println("New client connected." );
     	    	
 //        	 whenever a client connects
         	 ConnectionManager.getInstance().addConnection(con); //when a new client connect, add connection to the array
         	 serverConsole.setText(serverConsole.getText().concat("Size" + ConnectionManager.getInstance().getConnections().size() + "\n"));
-    	 }
-    	 else{
+        	 
+        	 
+        	 if(ConnectionManager.getInstance().getConnections().size()==2){
     		 
-    		 serverConsole.setText(serverConsole.getText().concat("Server already full. Game can be starter" + "\n"));
-    		 for (Connection c: ConnectionManager.getInstance().getConnections()){
-    	  			c.sendTcp(new ConnectionNumber(conenctionsNum)); //send all messages to connected clients
-    	  	 }
-    		 con.close();
-    	 }
-    	 for (Connection c: ConnectionManager.getInstance().getConnections()){
- 			c.sendTcp(new ChatMessage("", "Client has connected")); //send all messages to connected clients
- 		}
+        		 serverConsole.setText(serverConsole.getText().concat("Server already full. Game can be starter" + "\n"));
+    		 
+//    		 con.close();
+        	 }
+    	 
+	    	 for (Connection c: ConnectionManager.getInstance().getConnections()){
+		  			c.sendTcp(new ConnectionNumber(ConnectionManager.getInstance().getConnections().size())); //send all messages to connected clients
+		  	 }
+    	 
     	
     }
 

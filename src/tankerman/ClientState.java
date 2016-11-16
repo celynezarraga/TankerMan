@@ -86,6 +86,7 @@ public class ClientState extends BasicGameState{
 			
 		}else{
 			startGamebtn.render(arg0, arg2);
+//			connectionInfoField.setText("CLIENT NOT CONNECTED");
 		}
 		
 		

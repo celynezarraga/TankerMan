@@ -38,8 +38,12 @@ public class ClientListener implements SocketListener {
     	}
     	if (object instanceof ConnectionNumber){
     		ConnectionNumber noOfConnections = (ConnectionNumber) object;
-    		startGamebtn.setText(startGamebtn.getText().concat("PLAYERS COMPLETE. CLICK TO START GAME"));
-    		System.out.println("PLAYERS COMPLETE START GAME");
+    		
+    		if (noOfConnections.noOfConnections == 2){
+    			startGamebtn.setText(startGamebtn.getText().concat("PLAYERS COMPLETE. CLICK TO START GAME"));
+    			System.out.println("PLAYERS COMPLETE START GAME");
+    		}
+    		
         	
 
     		
