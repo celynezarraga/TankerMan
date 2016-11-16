@@ -10,6 +10,7 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import client.ClientListener;
 import client.ClientStarter;
 import ui.ClientConnect;
 
@@ -37,6 +38,8 @@ public class ClientState extends BasicGameState{
 	//
 	Boolean connected = false;
 	//
+	
+	ClientStarter client;
 
 
 	public ClientState(int clientState){
@@ -98,7 +101,7 @@ public class ClientState extends BasicGameState{
 	}
 
 	@Override
-	public void update(GameContainer arg0, StateBasedGame arg1, int arg2)
+	public void update(GameContainer arg0, StateBasedGame sbg, int arg2)
 			throws SlickException {
 		// TODO Auto-generated method stub
 		this.posX = Mouse.getX();
@@ -107,6 +110,7 @@ public class ClientState extends BasicGameState{
 		//uname
 		if((posX>20 && posX<800) && (posY>480 && posY<500)){
 			if(Mouse.isButtonDown(0)){
+				
 				}
 		}
 		
@@ -122,6 +126,17 @@ public class ClientState extends BasicGameState{
 			}
 			
 		}
+		//start game
+		if((posX>20 && posX<800) && (posY>380 && posY<400)){
+			if(Mouse.isButtonDown(0)){
+				if(ClientListener.startGame==true){ 
+					System.out.println("G NA");
+					sbg.enterState(1); // enter server state
+				
+				}
+			}
+		}		
+		
 		
 		
 		if (arg0.getInput().isKeyPressed(Input.KEY_ENTER)) {
@@ -131,7 +146,7 @@ public class ClientState extends BasicGameState{
 			
 			if((username != "" && !username.isEmpty()) && (serverIp != "" && !serverIp.isEmpty()) && (serverport != "" && !serverport.isEmpty()) ) {
 //				ClientConnect client = new ClientConnect(username,serverIp,serverport );
-				ClientStarter client = new ClientStarter(serverIp, serverport, username, connectionInfoField, startGamebtn);
+				client = new ClientStarter(serverIp, serverport, username, connectionInfoField, startGamebtn);
 				connected = true;
 //				arg1.enterState(5); // 5 chatstate
 //				System.out.println(username);

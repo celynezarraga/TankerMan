@@ -23,6 +23,7 @@ public class ClientStarter {
 
     public ClientStarter(String ip, String port, String playerName,TextField connectionInfoField, TextField startGamebtn) {
         client = new Client(ip, Integer.parseInt(port), Integer.parseInt(port));
+        
 //        chatUI ui_chat = new chatUI(client, playerName);
 //        client.setListener(new ClientListener(ui_chat)); //dont delete this is needed
         client.setListener(new ClientListener(startGamebtn));

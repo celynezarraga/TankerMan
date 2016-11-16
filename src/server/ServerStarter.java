@@ -16,6 +16,7 @@ public final class ServerStarter {
 	private Server server;
 	String ip;
 	
+	
 	public ServerStarter ( TextField serverConsole, TextField ipPortStringfield){
 		try {
 			

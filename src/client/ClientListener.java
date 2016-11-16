@@ -22,6 +22,7 @@ public class ClientListener implements SocketListener {
 	JTextArea chatBox;
 //	static chatUI ui_chat;
 	TextField startGamebtn;
+	public static Boolean startGame = false;;
 	
 	public ClientListener(TextField startGamebtn){
 //		this.ui_chat = ui_chat;
@@ -42,6 +43,7 @@ public class ClientListener implements SocketListener {
     		if (noOfConnections.noOfConnections == 2){
     			startGamebtn.setText(startGamebtn.getText().concat("PLAYERS COMPLETE. CLICK TO START GAME"));
     			System.out.println("PLAYERS COMPLETE START GAME");
+    			startGame = true;
     		}
     		
         	
@@ -54,6 +56,7 @@ public class ClientListener implements SocketListener {
     public void connected(Connection con) {
     	System.out.println("HELLO");
 //    	ui_chat.display(ui_chat.playerName);
+    	
     }
 
     @Override
