@@ -10,6 +10,8 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.jmr.wrapper.common.exceptions.NNClientCantConnect;
+
 import client.ClientListener;
 import client.ClientStarter;
 import ui.ClientConnect;
@@ -139,8 +141,6 @@ public class ClientState extends BasicGameState{
 			if(Mouse.isButtonDown(0)){
 				if(ClientListener.startGame==true){ 
 					System.out.println("G NA");
-//					new WorldMap(client, username, chatFieldTf, chatMsgsTf);
-					System.out.println(chatMsgsTf.getText());
 					sbg.enterState(1); // enter server state
 					
 				
@@ -157,9 +157,13 @@ public class ClientState extends BasicGameState{
 			
 			if((username != "" && !username.isEmpty()) && (serverIp != "" && !serverIp.isEmpty()) && (serverport != "" && !serverport.isEmpty()) ) {
 //				ClientConnect client = new ClientConnect(username,serverIp,serverport );
-				client = new ClientStarter(serverIp, serverport, username, connectionInfoField, startGamebtn, chatFieldTf, chatMsgsTf);
+				try {
+					client = new ClientStarter(serverIp, serverport, username, connectionInfoField, startGamebtn);
+				} catch (NNClientCantConnect e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				connected = true;
-				System.out.println(chatMsgsTf.getText());
 
 //				sbg.enterState(5); // 5 chatstate
 //				System.out.println(username);

@@ -21,10 +21,17 @@ public class ServerState extends BasicGameState{
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
+		
+		
+	}
+	
+	public void enter(GameContainer arg0, StateBasedGame arg1)
+			throws SlickException {
 		ipPortStringfield = new TextField(arg0, arg0.getDefaultFont(), 100, 180,800,20);
 		console = new TextField(arg0, arg0.getDefaultFont(), 0, 200,800,500);
-		// TODO Auto-generated method stub
 		ServerStarter server = new ServerStarter(console, ipPortStringfield);
+		// TODO Auto-generated method stub
+		
 		
 	}
 

@@ -13,6 +13,8 @@ import server.ConnectionManager;
 
 
 
+import tankerman.WorldMap;
+
 import com.jmr.wrapper.common.Connection;
 import com.jmr.wrapper.common.listener.SocketListener;
 
@@ -27,11 +29,10 @@ public class ClientListener implements SocketListener {
 	
 	public static Boolean startGame = false;;
 	
-	public ClientListener(TextField startGamebtn, TextField chatFieldTf, TextField chatMsgsTf){
+	public ClientListener(TextField startGamebtn){
 //		this.ui_chat = ui_chat;
 		this.startGamebtn =startGamebtn; 
-		this.chatFieldTf = chatFieldTf;
-		this.chatMsgsTf = chatMsgsTf;
+		
 	   }
 
 
@@ -40,7 +41,7 @@ public class ClientListener implements SocketListener {
     	if (object instanceof ChatMessage){
     		ChatMessage msg = (ChatMessage) object;
     		System.out.println(msg.username + ":" +msg.message); 
-    		chatMsgsTf.setText(chatMsgsTf.getText().concat(msg.username + ":" +msg.message));
+    		WorldMap.chatMsgsTf.setText(WorldMap.chatMsgsTf.getText().concat(msg.username + ":" +msg.message));
 //    		ui_chat.chatBox.append(msg.username + ":" +msg.message + "\n");
     	}
     	if (object instanceof ConnectionNumber){

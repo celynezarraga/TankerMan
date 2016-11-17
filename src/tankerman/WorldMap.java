@@ -6,9 +6,11 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.*;
 import org.newdawn.slick.tiled.TiledMap;
 
-import client.ClientStarter;
+import com.jmr.wrapper.common.Connection;
 
-import com.jmr.wrapper.client.Client;
+import packets.ChatMessage;
+import server.ConnectionManager;
+
 
 public class WorldMap extends BasicGameState{
 
@@ -33,9 +35,8 @@ public class WorldMap extends BasicGameState{
 	boolean[][] blocked;
 	
 	/// players
-	TextField chatMsgsTf;
-	TextField chatFieldTf;
-	ClientStarter client;
+	public static TextField chatMsgsTf;
+	public static TextField chatFieldTf;
 
 
 	
@@ -44,11 +45,10 @@ public class WorldMap extends BasicGameState{
 //		this.initTrue = initTrue;
 	}
 	
-	public WorldMap(ClientStarter client, String username, TextField chatFieldTf, TextField chatMsgsTf ) {
-		this.client = client;
-		this.chatFieldTf = chatFieldTf;
-		this.chatMsgsTf = chatMsgsTf;
-		System.out.println(client.getPlayerName());
+	public WorldMap( String username) {
+//		this.client = client;
+		
+//		System.out.println(client.getPlayerName());
 
 
 		
@@ -102,10 +102,11 @@ public class WorldMap extends BasicGameState{
 
 
 
-		this.chatMsgsTf.deactivate();
-		this.chatMsgsTf.render(gc, g);
-		this.chatFieldTf.render(gc, g);
-		System.out.println(chatMsgsTf.getText());
+		chatMsgsTf.deactivate();
+		chatMsgsTf.render(gc, g);
+		chatFieldTf.render(gc, g);
+		chatFieldTf.setFocus(true);
+//		System.out.println(chatMsgsTf.getText());
 
 			
 
@@ -129,9 +130,18 @@ public class WorldMap extends BasicGameState{
 		//
 		Input input = gc.getInput();
 		//chat
+		String playerName = client.ClientStarter.playerName;
 		if(input.isKeyDown(Input.KEY_ENTER)){
+//			String text = WorldMap.chatFieldTf.getText();		
+//			System.out.println(WorldMap.chatFieldTf.getText());
+
 			
-			this.chatFieldTf.setFocus(true);
+
+			ChatMessage msg = new ChatMessage(playerName, WorldMap.chatFieldTf.getText()+"\n");
+			client.ClientStarter.client.getServerConnection().sendTcp(msg);
+			WorldMap.chatFieldTf.setText("");
+			
+			
 		}
 		
 		

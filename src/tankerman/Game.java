@@ -29,16 +29,6 @@ public class Game extends StateBasedGame{
 		this.addState(new ClientState(clientState));
 		this.addState(new WorldMap(worldMap));
 		this.addState(new MainMenu(startMenu));
-	
-//		this.getState(veryfirstMenu).init(gc, this);
-//		this.getState(clientState).init(gc, this);
-
-//		this.getState(startMenu).init(gc, this);
-
-//		this.getState(worldMap).init(gc, this);
-
-
-//		this.enterState(veryfirstMenu);
 	}
 
 	public static void main(String[] args) {
