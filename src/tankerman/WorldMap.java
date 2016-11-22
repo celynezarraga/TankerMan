@@ -4,7 +4,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 import org.newdawn.slick.*;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
 import org.lwjgl.input.Mouse;
 import org.newdawn.slick.*;
@@ -44,7 +43,16 @@ public class WorldMap extends BasicGameState{
 	
 	int tileId;
 
-	}
+	public WorldMap(int worldmap) {}
+	
+	boolean[][] blocked;
+	
+	/// players
+	public static TextField chatMsgsTf;
+	public static TextField chatFieldTf;
+
+
+	
 	
 	
 
@@ -64,6 +72,16 @@ public class WorldMap extends BasicGameState{
 		moveRight = new Animation(walkRight,duration,false);
 		character = moveDown;
 
+		bullets = new LinkedList<Bullet>();
+
+		
+
+//		if (client.connected()){
+			
+	
+//		}
+		
+		
 	}
 	public void enter(GameContainer gc , StateBasedGame sbg)
             throws SlickException
@@ -85,8 +103,7 @@ public class WorldMap extends BasicGameState{
 		}
 	}
 
-	public void update(GameContainer gc, StateBasedGame sbg, int t) throws SlickException {
-chat
+	public void update(GameContainer gc, StateBasedGame sbg, Graphics g, int t) throws SlickException {
 		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 650);
 
 
@@ -95,7 +112,6 @@ chat
 		chatMsgsTf.render(gc, g);
 		chatFieldTf.render(gc, g);
 		chatFieldTf.setFocus(true);
-//		System.out.println(chatMsgsTf.getText());
 
 		Input input = gc.getInput();
 		//chat
@@ -117,18 +133,18 @@ chat
 		
 		int objectLayer = map.getLayerIndex("Objects");
 		map.getTileId(0,0,objectLayer);
-		Iterator<Bullet> g = bullets.iterator();
+		Iterator<Bullet> bulletIter = bullets.iterator();
 		
-		while(g.hasNext()){
-			Bullet b = g.next();
+		while(bulletIter.hasNext()){
+			Bullet b = bulletIter.next();
 			if(b.isActive() || (int)b.getPos().getX() < 700 || (int)b.getPos().getY() < 600){
 				b.update(t);
 			}else{
-				g.remove();
+				bulletIter.remove();
 			}
 			
 			if((int)b.getPos().getX() >= 720 || (int)b.getPos().getY() >= 570 || (int)b.getPos().getX() <= 35 || (int)b.getPos().getY() <= 35 ){
-				g.remove();
+				bulletIter.remove();
 			}
 			
 		}
@@ -185,6 +201,12 @@ chat
 
 	public int getID() {
 		return 1;
+	}
+	@Override
+	public void update(GameContainer arg0, StateBasedGame arg1, int arg2)
+			throws SlickException {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
