@@ -6,8 +6,17 @@ import java.util.LinkedList;
 import org.newdawn.slick.*;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.lwjgl.input.Mouse;
+import org.newdawn.slick.*;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.*;
 import org.newdawn.slick.tiled.TiledMap;
+
+import com.jmr.wrapper.common.Connection;
+
+import packets.ChatMessage;
+import server.ConnectionManager;
+
 
 public class WorldMap extends BasicGameState{
 
@@ -15,6 +24,9 @@ public class WorldMap extends BasicGameState{
 	private TiledMap map;
 	
 	int[] duration = {200,200};
+	//
+	float posX = 0;
+	float posY = 0;
 	
 	//Bullet Mechanics
 	private LinkedList<Bullet> bullets;
@@ -32,10 +44,13 @@ public class WorldMap extends BasicGameState{
 	
 	int tileId;
 
-	public WorldMap(int worldmap) {
 	}
+	
+	
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		
+		//chat		
 		//map = new Image("res/sample.jpg");
 		map = new TiledMap("res/1.tmx");
 		Image[] walkUp = {new Image("res/charBack2.png"),new Image("res/charBack2.png")};
@@ -49,8 +64,15 @@ public class WorldMap extends BasicGameState{
 		moveRight = new Animation(walkRight,duration,false);
 		character = moveDown;
 
-		bullets = new LinkedList<Bullet>();
 	}
+	public void enter(GameContainer gc , StateBasedGame sbg)
+            throws SlickException
+    {
+		chatMsgsTf = new TextField(gc, gc.getDefaultFont(), 748, 0,243,550);
+		chatMsgsTf.setBorderColor(Color.white);
+		chatFieldTf = new TextField(gc, gc.getDefaultFont(), 748, 500,243,100);
+		chatFieldTf.setBorderColor(Color.red);
+    }
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		//map.draw(cameraX, cameraY);
@@ -64,7 +86,35 @@ public class WorldMap extends BasicGameState{
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int t) throws SlickException {
+chat
+		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 650);
+
+
+
+		chatMsgsTf.deactivate();
+		chatMsgsTf.render(gc, g);
+		chatFieldTf.render(gc, g);
+		chatFieldTf.setFocus(true);
+//		System.out.println(chatMsgsTf.getText());
+
 		Input input = gc.getInput();
+		//chat
+		String playerName = client.ClientStarter.playerName;
+		if(input.isKeyDown(Input.KEY_ENTER)){
+//			String text = WorldMap.chatFieldTf.getText();		
+//			System.out.println(WorldMap.chatFieldTf.getText());
+
+			
+
+			ChatMessage msg = new ChatMessage(playerName, WorldMap.chatFieldTf.getText()+"\n");
+			client.ClientStarter.client.getServerConnection().sendTcp(msg);
+			WorldMap.chatFieldTf.setText("");
+			
+			
+		}
+		
+		
+		
 		int objectLayer = map.getLayerIndex("Objects");
 		map.getTileId(0,0,objectLayer);
 		Iterator<Bullet> g = bullets.iterator();
@@ -128,10 +178,13 @@ public class WorldMap extends BasicGameState{
 				charPositionX --;
 			}
 		}
+		
+	
+		
 	}
 
 	public int getID() {
 		return 1;
 	}
-
+	
 }

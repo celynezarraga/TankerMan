@@ -17,20 +17,18 @@ public class Game extends StateBasedGame{
 	
 	public Game(String gameName) {
 		super(gameName);
-		this.addState(new FirstMenu(veryfirstMenu));
-		this.addState(new ServerState(serverState));
-		this.addState(new ClientState(clientState));
-		this.addState(new MainMenu(startMenu));
-		this.addState(new WorldMap(worldMap));
 	}
+		
 	
 	public void initStatesList(GameContainer gc) throws SlickException{
 		gc.setShowFPS(false);
-		this.getState(veryfirstMenu).init(gc, this);
+		this.addState(new FirstMenu(veryfirstMenu));
 		
-		this.getState(startMenu).init(gc, this);
-		this.getState(worldMap).init(gc, this);
-		this.enterState(veryfirstMenu);
+
+		this.addState(new ServerState(serverState));
+		this.addState(new ClientState(clientState));
+		this.addState(new WorldMap(worldMap));
+		this.addState(new MainMenu(startMenu));
 	}
 
 	public static void main(String[] args) {
