@@ -13,15 +13,23 @@ import server.ConnectionManager;
 //import ui.chatUI;
 
 
+
 import com.jmr.wrapper.client.Client;
 import com.jmr.wrapper.common.Connection;
+import com.jmr.wrapper.common.exceptions.NNClientCantConnect;
 
 public class ClientStarter {
 
-    private final Client client;
+    public  static Client client;
     JTextArea chatBox;
+    public static   String playerName;
+    
+    
+    
+    
 
-    public ClientStarter(String ip, String port, String playerName,TextField connectionInfoField, TextField startGamebtn) {
+    public ClientStarter(String ip, String port, String playerName,TextField connectionInfoField, 
+    		TextField startGamebtn) throws NNClientCantConnect{
         client = new Client(ip, Integer.parseInt(port), Integer.parseInt(port));
         
 //        chatUI ui_chat = new chatUI(client, playerName);
@@ -31,6 +39,7 @@ public class ClientStarter {
 //        client.setListener(new ClientListener());
 
         client.connect();
+        ClientStarter.playerName=playerName;
         
 //        if (client.isConnected()) {
 //            System.out.println("Connected to the server.");
@@ -55,5 +64,9 @@ public class ClientStarter {
     public Boolean connected(){
     	return client.isConnected();
     }
+
+	
+	
+	
 
 }

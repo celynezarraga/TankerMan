@@ -10,6 +10,8 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import com.jmr.wrapper.common.exceptions.NNClientCantConnect;
+
 import client.ClientListener;
 import client.ClientStarter;
 import ui.ClientConnect;
@@ -21,6 +23,9 @@ public class ClientState extends BasicGameState{
 	private TextField serverPortfield;
 	private TextField connectionInfoField;
 	private TextField startGamebtn;
+	private TextField  chatFieldTf;
+	private TextField chatMsgsTf;
+
 
 
 	public static String username;
@@ -47,61 +52,61 @@ public class ClientState extends BasicGameState{
 	}
 	
 	@Override
-	public void init(GameContainer arg0, StateBasedGame arg1)
+	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
 		// TODO Auto-generated method stub
-		namefield = new TextField(arg0, arg0.getDefaultFont(), 20, 200,800,20);
-		namefield.setBorderColor(Color.white);
-		serverIpfield = new TextField(arg0, arg0.getDefaultFont(), 20, 300,800,20);
-		serverIpfield.setBorderColor(Color.white);
-		serverPortfield = new TextField(arg0, arg0.getDefaultFont(), 20, 400,800,20);
-		serverPortfield.setBorderColor(Color.white);
-		connectionInfoField = new TextField(arg0, arg0.getDefaultFont(), 20, 600,800,20);
-//		serverPortfield.setBorderColor(Color.white);
-		startGamebtn = new TextField(arg0, arg0.getDefaultFont(), 20, 300,800,20);
-		startGamebtn.setBorderColor(Color.white);
+		
 		
 	}
+	public void enter(GameContainer gc , StateBasedGame sbg) throws SlickException
+    {
+		namefield = new TextField(gc, gc.getDefaultFont(), 20, 200,800,20);
+		namefield.setBorderColor(Color.white);
+		serverIpfield = new TextField(gc, gc.getDefaultFont(), 20, 300,800,20);
+		serverIpfield.setBorderColor(Color.white);
+		serverPortfield = new TextField(gc, gc.getDefaultFont(), 20, 400,800,20);
+		serverPortfield.setBorderColor(Color.white);
+		connectionInfoField = new TextField(gc, gc.getDefaultFont(), 20, 600,800,20);
+	//	serverPortfield.setBorderColor(Color.white);
+		startGamebtn = new TextField(gc, gc.getDefaultFont(), 20, 300,800,20);
+		startGamebtn.setBorderColor(Color.white);
+    }
 
 	@Override
-	public void render(GameContainer arg0, StateBasedGame arg1, Graphics arg2)
-			throws SlickException {
+	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		// TODO Auto-generated method stub
 		
 		//
 		
 		
-		arg2.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 20);
+		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 20);
 		//
-		connectionInfoField.render(arg0, arg2);
+		connectionInfoField.render(gc, g);
 		if (!connected){
-			arg2.drawString("Enter username", 100, 180);
-			namefield.render(arg0, arg2);
+			g.drawString("Enter username", 100, 180);
 			namefield.setCursorVisible(true);
-			arg2.drawString("Enter Server IP", 100, 280);
-			serverIpfield.render(arg0, arg2);
+			namefield.render(gc, g);
+			
+			g.drawString("Enter Server IP", 100, 280);
 			serverIpfield.setCursorVisible(true);
-			arg2.drawString("Enter Server Port", 100, 380);
-			serverPortfield.render(arg0, arg2);
+			serverIpfield.render(gc, g);
+			
+			g.drawString("Enter Server Port", 100, 380);
 			serverPortfield.setCursorVisible(true);
-			arg2.drawString("PRESS ENTER TO CREATE CONNECTION", 285, 130);
+			serverPortfield.render(gc, g);
+			
+			g.drawString("PRESS ENTER TO CREATE CONNECTION", 285, 130);
 			
 			
 		}else{
-			startGamebtn.render(arg0, arg2);
+			startGamebtn.render(gc, g);
 //			connectionInfoField.setText("CLIENT NOT CONNECTED");
 		}
-		
-		
-		
-		
-
-		
 		
 	}
 
 	@Override
-	public void update(GameContainer arg0, StateBasedGame sbg, int arg2)
+	public void update(GameContainer gc, StateBasedGame sbg, int g)
 			throws SlickException {
 		// TODO Auto-generated method stub
 		this.posX = Mouse.getX();
@@ -110,19 +115,24 @@ public class ClientState extends BasicGameState{
 		//uname
 		if((posX>20 && posX<800) && (posY>480 && posY<500)){
 			if(Mouse.isButtonDown(0)){
-				
+//				System.out.println("unam");
+//				
 				}
 		}
 		
 		//ip
 		if((posX>20 && posX<800) && (posY>380 && posY<400)){
 			if(Mouse.isButtonDown(0)){
+//				System.out.println("ip");
+
 			}
 		}
 		
 		//port
 		if((posX>20 && posX<800) && (posY>280 && posY<300)){
-			if(Mouse.isButtonDown(0)){				
+			if(Mouse.isButtonDown(0)){
+//				System.out.println("port");
+//
 			}
 			
 		}
@@ -132,6 +142,7 @@ public class ClientState extends BasicGameState{
 				if(ClientListener.startGame==true){ 
 					System.out.println("G NA");
 					sbg.enterState(1); // enter server state
+					
 				
 				}
 			}
@@ -139,16 +150,22 @@ public class ClientState extends BasicGameState{
 		
 		
 		
-		if (arg0.getInput().isKeyPressed(Input.KEY_ENTER)) {
+		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
 			username = namefield.getText();
 			serverIp = serverIpfield.getText();
 			serverport = serverPortfield.getText();
 			
 			if((username != "" && !username.isEmpty()) && (serverIp != "" && !serverIp.isEmpty()) && (serverport != "" && !serverport.isEmpty()) ) {
 //				ClientConnect client = new ClientConnect(username,serverIp,serverport );
-				client = new ClientStarter(serverIp, serverport, username, connectionInfoField, startGamebtn);
+				try {
+					client = new ClientStarter(serverIp, serverport, username, connectionInfoField, startGamebtn);
+				} catch (NNClientCantConnect e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				connected = true;
-//				arg1.enterState(5); // 5 chatstate
+
+//				sbg.enterState(5); // 5 chatstate
 //				System.out.println(username);
 //				System.out.println(serverIp);
 //				System.out.println(serverport);
