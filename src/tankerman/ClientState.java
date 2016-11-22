@@ -22,7 +22,7 @@ public class ClientState extends BasicGameState{
 	private TextField serverIpfield;
 	private TextField serverPortfield;
 	private TextField connectionInfoField;
-	private TextField startGamebtn;
+	public static TextField startGamebtn;
 	private TextField  chatFieldTf;
 	private TextField chatMsgsTf;
 
@@ -31,6 +31,7 @@ public class ClientState extends BasicGameState{
 	public static String username;
 	public static String serverIp;
 	public static String serverport;
+	public static boolean startGame=false;
 
 	//
 	float posX = 0;
@@ -138,15 +139,17 @@ public class ClientState extends BasicGameState{
 		}
 		//start game
 		if((posX>20 && posX<800) && (posY>380 && posY<400)){
-			if(Mouse.isButtonDown(0)){
-				if(ClientListener.startGame==true){ 
+			if(Mouse.isButtonDown(0)){	
+				if(startGame==true){ 
 					System.out.println("G NA");
 					sbg.enterState(1); // enter server state
-					
-				
 				}
 			}
-		}		
+		}
+		if(startGame==true){ 
+			startGamebtn.setText("PLAYERS COMPLETE. CLICK TO START GAME");
+		}
+		
 		
 		
 		
@@ -159,7 +162,7 @@ public class ClientState extends BasicGameState{
 //				ClientConnect client = new ClientConnect(username,serverIp,serverport );
 				try {
 					client = new ClientStarter(serverIp, serverport, username, connectionInfoField, startGamebtn);
-				} catch (NNClientCantConnect e) {
+				} catch (Error e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}

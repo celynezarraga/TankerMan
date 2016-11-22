@@ -1,5 +1,7 @@
 package tankerman;
 
+import java.io.IOException;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -7,7 +9,7 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
-import server.ServerStarter;
+import client.ServerStarter;
 
 public class ServerState extends BasicGameState{
 	private TextField console;
@@ -29,7 +31,14 @@ public class ServerState extends BasicGameState{
 			throws SlickException {
 		ipPortStringfield = new TextField(arg0, arg0.getDefaultFont(), 100, 180,800,20);
 		console = new TextField(arg0, arg0.getDefaultFont(), 0, 200,800,500);
-		ServerStarter server = new ServerStarter(console, ipPortStringfield);
+		try {
+			Thread t = new ServerStarter(console, ipPortStringfield);
+	         t.start();
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// TODO Auto-generated method stub
 		
 		
