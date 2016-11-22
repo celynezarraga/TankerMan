@@ -101,9 +101,7 @@ public class WorldMap extends BasicGameState{
 		for(Bullet b : bullets){
 			b.render(gc, g);
 		}
-	}
-
-	public void update(GameContainer gc, StateBasedGame sbg, Graphics g, int t) throws SlickException {
+		
 		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 650);
 
 
@@ -112,6 +110,10 @@ public class WorldMap extends BasicGameState{
 		chatMsgsTf.render(gc, g);
 		chatFieldTf.render(gc, g);
 		chatFieldTf.setFocus(true);
+	}
+
+	public void update(GameContainer gc, StateBasedGame sbg, int t) throws SlickException {
+		
 
 		Input input = gc.getInput();
 		//chat
@@ -202,11 +204,7 @@ public class WorldMap extends BasicGameState{
 	public int getID() {
 		return 1;
 	}
-	@Override
-	public void update(GameContainer arg0, StateBasedGame arg1, int arg2)
-			throws SlickException {
-		// TODO Auto-generated method stub
-		
-	}
+	
+	
 	
 }
