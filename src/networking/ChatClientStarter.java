@@ -76,6 +76,7 @@ public class ChatClientStarter extends Thread {
 			OutputStream outToServer = ChatClientStarter.client.getOutputStream();
             DataOutputStream out = new DataOutputStream(outToServer);
             out.writeUTF(playerName+": " +msg);
+            out.writeUTF(playerName+": " +msg);
             out.flush();
            
        }catch(Exception e){}
@@ -132,7 +133,7 @@ public class ChatClientStarter extends Thread {
 	                          /* Send data to the ServerSocket */
 	                    	  
 	                    	   System.out.println("in.readUTF()"+in.readUTF());	                    	   
-	                   			WorldMap.chatMsgsTf.setText(WorldMap.chatMsgsTf.getText().concat(in.readUTF()));
+	                   			WorldMap.chatMsgsTf.setText(WorldMap.chatMsgsTf.getText().concat(in.readUTF()+"\n"));
 
 	                          
 	                       }

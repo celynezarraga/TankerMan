@@ -134,18 +134,16 @@ public class WorldMap extends BasicGameState{
 		//chat
 		String playerName = client.ClientStarter.playerName;
 		if(input.isKeyDown(Input.KEY_ENTER)){
-//			String text = WorldMap.chatFieldTf.getText();		
-//			System.out.println(WorldMap.chatFieldTf.getText());
+			String message = chatFieldTf.getText();
+			
+			if(message != "" && !message.isEmpty()) {
+				chatFieldTf.setText("");
+				networking.ChatClientStarter.send(message);
+			}	
+//			System.out.println("from textfield 	WORLDMAP: "+WorldMap.chatFieldTf.getText());
 
 			
-
-//			ChatMessage msg = new ChatMessage(playerName, WorldMap.chatFieldTf.getText()+"\n");
-//			client.ClientStarter.client.getServerConnection().sendTcp(msg);
-			System.out.println("from textfield 	WORLDMAP: "+WorldMap.chatFieldTf.getText());
-
-			networking.ChatClientStarter.send(chatFieldTf.getText()+"\n");
-			
-			chatFieldTf.setText("");
+//			chatFieldTf.setText("");
 			
 		}
 		
