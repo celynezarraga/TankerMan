@@ -7,6 +7,7 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import networking.GameServer;
 import server.ServerStarter;
 
 public class ServerState extends BasicGameState{
@@ -29,9 +30,8 @@ public class ServerState extends BasicGameState{
 			throws SlickException {
 		ipPortStringfield = new TextField(arg0, arg0.getDefaultFont(), 100, 180,800,20);
 		console = new TextField(arg0, arg0.getDefaultFont(), 0, 200,800,500);
-		ServerStarter server = new ServerStarter(console, ipPortStringfield);
-		// TODO Auto-generated method stub
-		
+//		ServerStarter server = new ServerStarter(console, ipPortStringfield);
+		GameServer server = new GameServer(console, ipPortStringfield);
 		
 	}
 
