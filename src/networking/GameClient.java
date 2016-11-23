@@ -17,10 +17,12 @@ public class GameClient implements Runnable, Constants{
     public static DatagramSocket socket;
 	String serverData;
 	int startGame = 0;
+	private String port;
 
 	public GameClient(String serverIp, String port, String name) throws Exception{
 		this.server=serverIp;
 		this.name=name;
+		this.port=port;
 		socket = new DatagramSocket();
 		
 //		frame.setTitle(APP_NAME+":"+name);
@@ -41,6 +43,7 @@ public class GameClient implements Runnable, Constants{
 //		frame.addMouseMotionListener(new MouseMotionHandler());
 
 		//tiime to play
+		
 		t.start();		
 	}
 	
@@ -100,7 +103,8 @@ public class GameClient implements Runnable, Constants{
 					}
 					//show the changes
 //					frame.repaint();
-				}			
+				}
+				
 			}			
 		}
 	}

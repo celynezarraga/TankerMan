@@ -14,6 +14,7 @@ import com.jmr.wrapper.common.exceptions.NNClientCantConnect;
 
 import client.ClientListener;
 import client.ClientStarter;
+import networking.ChatClientStarter;
 import networking.GameClient;
 import ui.ClientConnect;
 
@@ -35,6 +36,7 @@ public class ClientState extends BasicGameState{
 	float shiftY = posY + 300;
 	Boolean connected = false;
 	GameClient client;
+	ChatClientStarter chatclient;
 	int completePlayers = 0;
 
 
@@ -123,6 +125,7 @@ public class ClientState extends BasicGameState{
 //				ClientConnect client = new ClientConnect(username,serverIp,serverport );
 				try {
 					client = new GameClient(serverIp, serverport, username);	
+					chatclient = new ChatClientStarter(username,serverIp, serverport);
 					connected = true;
 				} catch (Exception e) {
 					e.printStackTrace();
