@@ -141,6 +141,8 @@ public class WorldMap extends BasicGameState{
 
 //			ChatMessage msg = new ChatMessage(playerName, WorldMap.chatFieldTf.getText()+"\n");
 //			client.ClientStarter.client.getServerConnection().sendTcp(msg);
+			System.out.println("from textfield 	WORLDMAP: "+WorldMap.chatFieldTf.getText());
+
 			networking.ChatClientStarter.send(chatFieldTf.getText()+"\n");
 			
 			chatFieldTf.setText("");

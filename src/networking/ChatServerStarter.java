@@ -63,7 +63,7 @@ public class ChatServerStarter extends Thread {
                                         /* Read data from the ClientSocket */
                                         String message = in.readUTF();
 //                                        WorldMap.chatMsgsTf.setText(WorldMap.chatMsgsTf.getText().concat(message));
-                                        System.out.println(message);
+                                        System.out.println("fromchat server:"+message);
                                         
                                         
                                         for(Socket c : clients) {

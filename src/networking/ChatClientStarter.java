@@ -70,6 +70,8 @@ public class ChatClientStarter extends Thread {
 ////        	DatagramPacket packet = new DatagramPacket(buf, buf.length, address, ip);
 //        	socket.send(packet);
 //        }catch(Exception e){}
+		System.out.println("from SNED: "+msg);
+
 		try{
 			OutputStream outToServer = ChatClientStarter.client.getOutputStream();
             DataOutputStream out = new DataOutputStream(outToServer);
