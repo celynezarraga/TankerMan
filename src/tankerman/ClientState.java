@@ -14,6 +14,7 @@ import com.jmr.wrapper.common.exceptions.NNClientCantConnect;
 
 import client.ClientListener;
 import client.ClientStarter;
+import networking.GameClient;
 import ui.ClientConnect;
 
 public class ClientState extends BasicGameState{
@@ -25,37 +26,24 @@ public class ClientState extends BasicGameState{
 	private TextField startGamebtn;
 	private TextField  chatFieldTf;
 	private TextField chatMsgsTf;
-
-
-
 	public static String username;
 	public static String serverIp;
 	public static String serverport;
-
-	//
 	float posX = 0;
 	float posY = 0;
 	float shiftX = posX + 450;
 	float shiftY = posY + 300;
-	//
-	
-	
-	//
 	Boolean connected = false;
-	//
-	
-	ClientStarter client;
+	GameClient client;
+	int completePlayers = 0;
 
 
 	public ClientState(int clientState){
 		
 	}
 	
-	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		// TODO Auto-generated method stub
-		
 		
 	}
 	public void enter(GameContainer gc , StateBasedGame sbg) throws SlickException
@@ -74,13 +62,7 @@ public class ClientState extends BasicGameState{
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		// TODO Auto-generated method stub
-		
-		//
-		
-		
 		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 20);
-		//
 		connectionInfoField.render(gc, g);
 		if (!connected){
 			g.drawString("Enter username", 100, 180);
@@ -99,56 +81,38 @@ public class ClientState extends BasicGameState{
 			
 			
 		}else{
-			startGamebtn.render(gc, g);
-//			connectionInfoField.setText("CLIENT NOT CONNECTED");
+			if(completePlayers==1){
+				sbg.enterState(1);
+			}
+			else{
+				completePlayers = client.getStartGame();
+			}
+//			startGamebtn.render(gc, g);
+			connectionInfoField.setText("WAITING FOR OTHER PLAYERS");
 		}
 		
 	}
 
-	@Override
 	public void update(GameContainer gc, StateBasedGame sbg, int g)
 			throws SlickException {
-		// TODO Auto-generated method stub
 		this.posX = Mouse.getX();
 		this.posY = Mouse.getY();
 		
-		//uname
 		if((posX>20 && posX<800) && (posY>480 && posY<500)){
 			if(Mouse.isButtonDown(0)){
-//				System.out.println("unam");
-//				
 				}
 		}
 		
-		//ip
 		if((posX>20 && posX<800) && (posY>380 && posY<400)){
 			if(Mouse.isButtonDown(0)){
-//				System.out.println("ip");
-
 			}
 		}
 		
-		//port
 		if((posX>20 && posX<800) && (posY>280 && posY<300)){
 			if(Mouse.isButtonDown(0)){
-//				System.out.println("port");
-//
 			}
 			
-		}
-		//start game
-		if((posX>20 && posX<800) && (posY>380 && posY<400)){
-			if(Mouse.isButtonDown(0)){
-				if(ClientListener.startGame==true){ 
-					System.out.println("G NA");
-					sbg.enterState(1); // enter server state
-					
-				
-				}
-			}
-		}		
-		
-		
+		}	
 		
 		if (gc.getInput().isKeyPressed(Input.KEY_ENTER)) {
 			username = namefield.getText();
@@ -158,31 +122,17 @@ public class ClientState extends BasicGameState{
 			if((username != "" && !username.isEmpty()) && (serverIp != "" && !serverIp.isEmpty()) && (serverport != "" && !serverport.isEmpty()) ) {
 //				ClientConnect client = new ClientConnect(username,serverIp,serverport );
 				try {
-					client = new ClientStarter(serverIp, serverport, username, connectionInfoField, startGamebtn);
-				} catch (NNClientCantConnect e) {
-					// TODO Auto-generated catch block
+					client = new GameClient(serverIp, serverport, username);	
+					connected = true;
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
-				connected = true;
-
-//				sbg.enterState(5); // 5 chatstate
-//				System.out.println(username);
-//				System.out.println(serverIp);
-//				System.out.println(serverport);
-
 			}
 		}
-		
 	}
 
-	@Override
 	public int getID() {
-		// TODO Auto-generated method stub
 		return 4;
 	}
-	
-	
-
-	
-	
+		
 }

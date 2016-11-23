@@ -1,5 +1,6 @@
 package tankerman;
 
+import java.net.DatagramPacket;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -124,10 +125,11 @@ public class WorldMap extends BasicGameState{
 
 			
 
-			ChatMessage msg = new ChatMessage(playerName, WorldMap.chatFieldTf.getText()+"\n");
-			client.ClientStarter.client.getServerConnection().sendTcp(msg);
-			WorldMap.chatFieldTf.setText("");
+//			ChatMessage msg = new ChatMessage(playerName, WorldMap.chatFieldTf.getText()+"\n");
+//			client.ClientStarter.client.getServerConnection().sendTcp(msg);
+			networking.GameClient.send(WorldMap.chatFieldTf.getText()+"\n");
 			
+			WorldMap.chatFieldTf.setText("");
 			
 		}
 		
