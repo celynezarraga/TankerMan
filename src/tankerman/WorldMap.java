@@ -1,5 +1,6 @@
 package tankerman;
 
+import java.net.InetAddress;
 import java.net.DatagramPacket;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -23,7 +24,11 @@ import server.ConnectionManager;
 public class WorldMap extends BasicGameState{
 
 	Animation character, moveUp, moveDown, moveLeft, moveRight;
+	Animation characters[] = new Animation[4];
+	
 	private TiledMap map;
+	private InetAddress test;
+	private Tank[] players = new Tank[4];
 	
 	int[] duration = {200,200};
 	//
@@ -74,8 +79,12 @@ public class WorldMap extends BasicGameState{
 		moveDown = new Animation(walkDown,duration,false);
 		moveLeft = new Animation(walkLeft,duration,false);
 		moveRight = new Animation(walkRight,duration,false);
-		character = moveDown;
-
+		characters[0] = moveDown;
+		
+		players[0] = new Tank(test,"Damn",4444,character);
+		players[0].setXpos(charPositionX);
+		players[0].setYpos(charPositionY);
+		
 		bullets = new LinkedList<Bullet>();
 
 
@@ -113,8 +122,8 @@ public class WorldMap extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
 		map.render(0,0);
-		character.draw(charPositionX * 30, charPositionY * 30);
-		g.drawString("CharacterX: " + charPositionX *30 + " CharY: " + charPositionY*30 , 400, 20);
+		characters[0].draw(players[0].getXpos() * 30, players[0].getYpos() * 30);
+		g.drawString("CharacterX: " + players[0].getXpos() * 30 + " CharY: " + players[0].getYpos()*30 , 400, 20);
 		
 		for(Bullet b : bullets){
 			b.render(gc, g);
@@ -127,11 +136,6 @@ public class WorldMap extends BasicGameState{
 		chatFieldTf.render(gc, g);
 		chatFieldTf.setFocus(true);
 	}
-	public static String getText(Boolean textAvailable){
-		if (textAvailable) return WorldMap.chatFieldTf.getText()+"\n";
-		else return "";
-	}
-
 	public void update(GameContainer gc, StateBasedGame sbg, int t) throws SlickException {
 		
 
@@ -165,47 +169,53 @@ public class WorldMap extends BasicGameState{
 		}
 		
 		if(gc.getInput().isKeyPressed(Input.KEY_SPACE)){
-			if(character == moveDown){
-				bullets.add(new Bullet(new Vector2f((charPositionX*30) + 23,(charPositionY*30) + 30), new Vector2f(0,(charPositionY*30) + 60)));
-			}else if(character == moveUp){
-				bullets.add(new Bullet(new Vector2f((charPositionX*30) + 23,(charPositionY*30)), new Vector2f(0,-((charPositionY*30) - 60))));
-			}else if(character == moveLeft){
-				bullets.add(new Bullet(new Vector2f((charPositionX*30),(charPositionY*30) + 16), new Vector2f(-((charPositionX*30) - 60),0)));
-			}else if(character == moveRight){
-				bullets.add(new Bullet(new Vector2f((charPositionX*30)+30,(charPositionY*30) + 16), new Vector2f((charPositionX*30)+60,0)));
-			}	
+			try{
+				if(characters[0] == moveDown){
+					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30) + 23,(players[0].getYpos()*30) + 30), new Vector2f(0,(players[0].getYpos()*30) + 60),map));
+				}else if(characters[0] == moveUp){
+					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30) + 23,(players[0].getYpos()*30)), new Vector2f(0,-((players[0].getYpos()*30) - 60)),map));
+				}else if(characters[0] == moveLeft){
+					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30),(players[0].getYpos()*30) + 16), new Vector2f(-((players[0].getXpos()*30) - 60),0),map));
+				}else if(characters[0] == moveRight){
+					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30)+30,(players[0].getYpos()*30) + 16), new Vector2f((players[0].getXpos()*30)+60,0),map));
+				}
+			}catch(Exception e){}
 		}
 		
 		
 		if(input.isKeyPressed(Input.KEY_UP)){
-			character = moveUp;
-			charPositionY --;
-				if(map.getTileId(charPositionX,charPositionY , objectLayer) != 0){
-					charPositionY ++;
+			players[0].setChar(moveUp);
+			characters[0] = players[0].getChar();
+			players[0].setYpos(players[0].getYpos()-1);
+				if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
+					players[0].setYpos(players[0].getYpos()+1);
 				}
 		}
 		
 		if(input.isKeyPressed(Input.KEY_DOWN)){
-			character = moveDown;
-			charPositionY ++;
-			if(map.getTileId(charPositionX,charPositionY , objectLayer) != 0){
-				charPositionY --;
+			players[0].setChar(moveDown);
+			characters[0] = players[0].getChar();
+			players[0].setYpos(players[0].getYpos()+1);
+			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
+				players[0].setYpos(players[0].getYpos()-1);
 			}
 		}
 		
 		if(input.isKeyPressed(Input.KEY_LEFT)){
-			character = moveLeft;
-			charPositionX --;
-			if(map.getTileId(charPositionX,charPositionY , objectLayer) != 0){
-				charPositionX ++;
+			players[0].setChar(moveLeft);
+			characters[0] = players[0].getChar();
+			players[0].setXpos(players[0].getXpos()-1);
+			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
+				players[0].setXpos(players[0].getXpos()+1);
 			}
 		}
 		
 		if(input.isKeyPressed(Input.KEY_RIGHT)){
-			character = moveRight;
-			charPositionX ++;
-			if(map.getTileId(charPositionX,charPositionY , objectLayer) != 0){
-				charPositionX --;
+			players[0].setChar(moveRight);
+			characters[0]= players[0].getChar();
+			players[0].setXpos(players[0].getXpos()+1);
+			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
+				players[0].setXpos(players[0].getXpos()-1);
 			}
 		}	
 	}
