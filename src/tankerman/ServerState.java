@@ -1,5 +1,7 @@
 package tankerman;
 
+import java.io.IOException;
+
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.SlickException;
@@ -7,10 +9,12 @@ import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
 
+import networking.ChatServerStarter;
+import networking.GameServer;
 import server.ServerStarter;
 
 public class ServerState extends BasicGameState{
-	private TextField console;
+	public static TextField console;
 	private TextField  ipPortStringfield;
 	public static String serverIp;
 	
@@ -21,10 +25,22 @@ public class ServerState extends BasicGameState{
 	@Override
 	public void init(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
-		ipPortStringfield = new TextField(arg0, arg0.getDefaultFont(), 100, 180,800,20);
-		console = new TextField(arg0, arg0.getDefaultFont(), 0, 200,800,500);
-		// TODO Auto-generated method stub
-		ServerStarter server = new ServerStarter(console, ipPortStringfield);
+		
+		
+	}
+	
+	public void enter(GameContainer arg0, StateBasedGame arg1)
+			throws SlickException {
+		ipPortStringfield = new TextField(arg0, arg0.getDefaultFont(), 200, 150,600,20);
+		console = new TextField(arg0, arg0.getDefaultFont(), 200, 200,600,400);
+//		ServerStarter server = new ServerStarter(console, ipPortStringfield);
+		GameServer server = new GameServer(console, ipPortStringfield);
+		try {
+			ChatServerStarter chatserver = new ChatServerStarter();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 

@@ -1,14 +1,25 @@
 package tankerman;
 
 import java.net.InetAddress;
+import java.net.DatagramPacket;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import networking.ChatClientStarter;
+
 import org.newdawn.slick.*;
-import org.newdawn.slick.SlickException;
 import org.newdawn.slick.geom.Vector2f;
+import org.lwjgl.input.Mouse;
+import org.newdawn.slick.*;
+import org.newdawn.slick.gui.TextField;
 import org.newdawn.slick.state.*;
 import org.newdawn.slick.tiled.TiledMap;
+
+import com.jmr.wrapper.common.Connection;
+
+import packets.ChatMessage;
+import server.ConnectionManager;
+
 
 public class WorldMap extends BasicGameState{
 
@@ -20,6 +31,9 @@ public class WorldMap extends BasicGameState{
 	private Tank[] players = new Tank[4];
 	
 	int[] duration = {200,200};
+	//
+	float posX = 0;
+	float posY = 0;
 	
 	//Bullet Mechanics
 	private LinkedList<Bullet> bullets;
@@ -27,8 +41,8 @@ public class WorldMap extends BasicGameState{
 	private int delta = 0;
 	private int current = 0;
 	
-	int charPositionX = 1;
-	int charPositionY = 2;
+	int charPositionX=1;
+	int charPositionY=1;
 	//float shiftX = charPositionX + 450;
 	//float shiftY = charPositionY + 300;
 	
@@ -37,10 +51,23 @@ public class WorldMap extends BasicGameState{
 	
 	int tileId;
 
-	public WorldMap(int worldmap) {
-	}
+	public WorldMap(int worldmap) {}
+	
+	boolean[][] blocked;
+	
+	/// players
+	public static TextField chatMsgsTf;
+	public static TextField chatFieldTf;
+	public static Boolean enterUp = false;
+
+	int playerID;
+	
+	
+	
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+		
+		//chat		
 		//map = new Image("res/sample.jpg");
 		map = new TiledMap("res/1.tmx");
 		Image[] walkUp = {new Image("res/charBack2.png"),new Image("res/charBack2.png")};
@@ -59,10 +86,41 @@ public class WorldMap extends BasicGameState{
 		players[0].setYpos(charPositionY);
 		
 		bullets = new LinkedList<Bullet>();
+
+
+//		if (client.connected()){
+			
+	
+//		}
+		
 	}
+	public void enter(GameContainer gc , StateBasedGame sbg)
+            throws SlickException
+    {
+		chatMsgsTf = new TextField(gc, gc.getDefaultFont(), 748, 0,243,550);
+		chatMsgsTf.setBorderColor(Color.white);
+		chatFieldTf = new TextField(gc, gc.getDefaultFont(), 748, 500,243,100);
+		chatFieldTf.setBorderColor(Color.red);
+		
+		playerID = networking.GameClient.getPlayerID();
+		
+		if(playerID == 0){
+			charPositionX = 1;
+			charPositionY = 1;
+			character = moveDown;
+		}
+		else if(playerID == 1){
+			charPositionX= 1;
+			charPositionY = 18;
+			character = moveUp;
+		} 
+							    
+    }
+	
+
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		//map.draw(cameraX, cameraY);
+		
 		map.render(0,0);
 		characters[0].draw(players[0].getXpos() * 30, players[0].getYpos() * 30);
 		g.drawString("CharacterX: " + players[0].getXpos() * 30 + " CharY: " + players[0].getYpos()*30 , 400, 20);
@@ -70,24 +128,42 @@ public class WorldMap extends BasicGameState{
 		for(Bullet b : bullets){
 			b.render(gc, g);
 		}
-	
+		
+		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 650);
+
+		chatMsgsTf.deactivate();
+		chatMsgsTf.render(gc, g);
+		chatFieldTf.render(gc, g);
+		chatFieldTf.setFocus(true);
 	}
 	public void update(GameContainer gc, StateBasedGame sbg, int t) throws SlickException {
+		
+
 		Input input = gc.getInput();
+		//chat
+		if(input.isKeyDown(Input.KEY_ENTER)){
+			String message = chatFieldTf.getText();
+			
+			if(message != "" && !message.isEmpty()) {
+				chatFieldTf.setText("");
+				networking.ChatClientStarter.send(message);
+			}	
+		}
+
 		int objectLayer = map.getLayerIndex("Objects");
 		map.getTileId(0,0,objectLayer);
-		Iterator<Bullet> g = bullets.iterator();
+		Iterator<Bullet> bulletIter = bullets.iterator();
 		
-		while(g.hasNext()){
-			Bullet b = g.next();
+		while(bulletIter.hasNext()){
+			Bullet b = bulletIter.next();
 			if(b.isActive() || (int)b.getPos().getX() < 700 || (int)b.getPos().getY() < 600){
 				b.update(t);
 			}else{
-				g.remove();
+				bulletIter.remove();
 			}
 			
 			if((int)b.getPos().getX() >= 720 || (int)b.getPos().getY() >= 570 || (int)b.getPos().getX() <= 35 || (int)b.getPos().getY() <= 35 ){
-				g.remove();
+				bulletIter.remove();
 			}
 			
 		}
@@ -104,8 +180,6 @@ public class WorldMap extends BasicGameState{
 					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30)+30,(players[0].getYpos()*30) + 16), new Vector2f((players[0].getXpos()*30)+60,0),map));
 				}
 			}catch(Exception e){}
-			
-			
 		}
 		
 		
@@ -143,11 +217,10 @@ public class WorldMap extends BasicGameState{
 			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
 				players[0].setXpos(players[0].getXpos()-1);
 			}
-		}
+		}	
 	}
 
 	public int getID() {
 		return 1;
 	}
-
 }
