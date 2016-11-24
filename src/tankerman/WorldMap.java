@@ -81,10 +81,6 @@ public class WorldMap extends BasicGameState{
 		moveRight = new Animation(walkRight,duration,false);
 		characters[0] = moveDown;
 		
-		players[0] = new Tank(test,"Damn",4444,character);
-		players[0].setXpos(charPositionX);
-		players[0].setYpos(charPositionY);
-		
 		bullets = new LinkedList<Bullet>();
 
 
@@ -107,13 +103,27 @@ public class WorldMap extends BasicGameState{
 		if(playerID == 0){
 			charPositionX = 1;
 			charPositionY = 1;
-			character = moveDown;
+			characters[0] = moveDown;
 		}
 		else if(playerID == 1){
 			charPositionX= 1;
 			charPositionY = 18;
-			character = moveUp;
-		} 
+			characters[0] = moveUp;
+		}
+		else if(playerID == 2){
+			charPositionX= 23;
+			charPositionY = 18;
+			characters[0] = moveDown;
+		}
+		else if(playerID == 3){
+			charPositionX= 23;
+			charPositionY = 18;
+			characters[0] = moveUp;
+		}
+		
+		players[0] = new Tank(test,"Damn",4444,character);
+		players[0].setXpos(charPositionX);
+		players[0].setYpos(charPositionY);
 							    
     }
 	
