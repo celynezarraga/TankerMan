@@ -4,6 +4,8 @@ import java.net.DatagramPacket;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import networking.ChatClientStarter;
+
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
 import org.lwjgl.input.Mouse;
@@ -51,6 +53,7 @@ public class WorldMap extends BasicGameState{
 	/// players
 	public static TextField chatMsgsTf;
 	public static TextField chatFieldTf;
+	public static Boolean enterUp = false;
 
 
 	
@@ -91,7 +94,14 @@ public class WorldMap extends BasicGameState{
 		chatMsgsTf.setBorderColor(Color.white);
 		chatFieldTf = new TextField(gc, gc.getDefaultFont(), 748, 500,243,100);
 		chatFieldTf.setBorderColor(Color.red);
+		//
+		
+		 
+							    
+
     }
+	
+
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		//map.draw(cameraX, cameraY);
@@ -112,6 +122,10 @@ public class WorldMap extends BasicGameState{
 		chatFieldTf.render(gc, g);
 		chatFieldTf.setFocus(true);
 	}
+	public static String getText(Boolean textAvailable){
+		if (textAvailable) return WorldMap.chatFieldTf.getText()+"\n";
+		else return "";
+	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int t) throws SlickException {
 		
@@ -120,16 +134,16 @@ public class WorldMap extends BasicGameState{
 		//chat
 		String playerName = client.ClientStarter.playerName;
 		if(input.isKeyDown(Input.KEY_ENTER)){
-//			String text = WorldMap.chatFieldTf.getText();		
-//			System.out.println(WorldMap.chatFieldTf.getText());
+			String message = chatFieldTf.getText();
+			
+			if(message != "" && !message.isEmpty()) {
+				chatFieldTf.setText("");
+				networking.ChatClientStarter.send(message);
+			}	
+//			System.out.println("from textfield 	WORLDMAP: "+WorldMap.chatFieldTf.getText());
 
 			
-
-//			ChatMessage msg = new ChatMessage(playerName, WorldMap.chatFieldTf.getText()+"\n");
-//			client.ClientStarter.client.getServerConnection().sendTcp(msg);
-			networking.GameClient.send(WorldMap.chatFieldTf.getText()+"\n");
-			
-			WorldMap.chatFieldTf.setText("");
+//			chatFieldTf.setText("");
 			
 		}
 		
