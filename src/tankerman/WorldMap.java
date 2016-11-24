@@ -93,15 +93,18 @@ public class WorldMap extends BasicGameState{
 		}
 		
 		if(gc.getInput().isKeyPressed(Input.KEY_SPACE)){
-			if(characters[0] == moveDown){
-				bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30) + 23,(players[0].getYpos()*30) + 30), new Vector2f(0,(players[0].getYpos()*30) + 60)));
-			}else if(characters[0] == moveUp){
-				bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30) + 23,(players[0].getYpos()*30)), new Vector2f(0,-((players[0].getYpos()*30) - 60))));
-			}else if(characters[0] == moveLeft){
-				bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30),(players[0].getYpos()*30) + 16), new Vector2f(-((players[0].getXpos()*30) - 60),0)));
-			}else if(characters[0] == moveRight){
-				bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30)+30,(players[0].getYpos()*30) + 16), new Vector2f((players[0].getXpos()*30)+60,0)));
-			}
+			try{
+				if(characters[0] == moveDown){
+					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30) + 23,(players[0].getYpos()*30) + 30), new Vector2f(0,(players[0].getYpos()*30) + 60),map));
+				}else if(characters[0] == moveUp){
+					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30) + 23,(players[0].getYpos()*30)), new Vector2f(0,-((players[0].getYpos()*30) - 60)),map));
+				}else if(characters[0] == moveLeft){
+					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30),(players[0].getYpos()*30) + 16), new Vector2f(-((players[0].getXpos()*30) - 60),0),map));
+				}else if(characters[0] == moveRight){
+					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30)+30,(players[0].getYpos()*30) + 16), new Vector2f((players[0].getXpos()*30)+60,0),map));
+				}
+			}catch(Exception e){}
+			
 			
 		}
 		

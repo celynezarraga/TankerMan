@@ -22,10 +22,10 @@ public class Bullet {
 	
 	private static int MAX_LIFETIME = 1800;
 	
-	public Bullet(Vector2f pos, Vector2f spd,String map)throws Exception{
+	public Bullet(Vector2f pos, Vector2f spd,TiledMap map)throws Exception{
 		this.pos = pos;
 		this.spd = spd;
-		this.map = new TiledMap(map);
+		this.map = map;
 	}
 	
 	public Bullet(){
@@ -33,12 +33,20 @@ public class Bullet {
 	}
 	
 	public void update(int t){
+		int objectLayer = map.getLayerIndex("Objects");
+		map.getTileId(0,0,objectLayer);
+		
 		if(active){
+			if(map.getTileId(((int)pos.getX()/30),((int)pos.getY()/30), objectLayer) != 0){
+				active = false;
+			}
+			
 			pos.add(spd.copy().scale(t/1000.0f));
 			lived += t;
 			if(lived > MAX_LIFETIME){
 				active = false;
 			}
+			
 			
 		}
 	}
