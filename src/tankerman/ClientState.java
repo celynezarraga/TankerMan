@@ -12,11 +12,9 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import com.jmr.wrapper.common.exceptions.NNClientCantConnect;
 
-import client.ClientListener;
-import client.ClientStarter;
+
 import networking.ChatClientStarter;
 import networking.GameClient;
-import ui.ClientConnect;
 
 public class ClientState extends BasicGameState{
 	
@@ -50,16 +48,14 @@ public class ClientState extends BasicGameState{
 	}
 	public void enter(GameContainer gc , StateBasedGame sbg) throws SlickException
     {
-		namefield = new TextField(gc, gc.getDefaultFont(), 20, 200,800,20);
+		namefield = new TextField(gc, gc.getDefaultFont(), 200, 200,600,20);
 		namefield.setBorderColor(Color.white);
-		serverIpfield = new TextField(gc, gc.getDefaultFont(), 20, 300,800,20);
+		serverIpfield = new TextField(gc, gc.getDefaultFont(), 200, 300,600,20);
 		serverIpfield.setBorderColor(Color.white);
-		serverPortfield = new TextField(gc, gc.getDefaultFont(), 20, 400,800,20);
+		serverPortfield = new TextField(gc, gc.getDefaultFont(), 200, 400,600,20);
 		serverPortfield.setBorderColor(Color.white);
-		connectionInfoField = new TextField(gc, gc.getDefaultFont(), 20, 600,800,20);
-	//	serverPortfield.setBorderColor(Color.white);
-		startGamebtn = new TextField(gc, gc.getDefaultFont(), 20, 300,800,20);
-		startGamebtn.setBorderColor(Color.white);
+		connectionInfoField = new TextField(gc, gc.getDefaultFont(), 200, 600,600,20);
+	
     }
 
 	@Override
@@ -67,19 +63,19 @@ public class ClientState extends BasicGameState{
 		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 20);
 		connectionInfoField.render(gc, g);
 		if (!connected){
-			g.drawString("Enter username", 100, 180);
+			g.drawString("Enter username", 200, 180);
 			namefield.setCursorVisible(true);
 			namefield.render(gc, g);
 			
-			g.drawString("Enter Server IP", 100, 280);
+			g.drawString("Enter Server IP", 200, 280);
 			serverIpfield.setCursorVisible(true);
 			serverIpfield.render(gc, g);
 			
-			g.drawString("Enter Server Port", 100, 380);
+			g.drawString("Enter Server Port", 200, 380);
 			serverPortfield.setCursorVisible(true);
 			serverPortfield.render(gc, g);
 			
-			g.drawString("PRESS ENTER TO CREATE CONNECTION", 285, 130);
+			g.drawString("PRESS ENTER TO CREATE CONNECTION", 350, 130);
 			
 			
 		}else{
@@ -100,17 +96,17 @@ public class ClientState extends BasicGameState{
 		this.posX = Mouse.getX();
 		this.posY = Mouse.getY();
 		
-		if((posX>20 && posX<800) && (posY>480 && posY<500)){
+		if((posX>200 && posX<600) && (posY>480 && posY<500)){
 			if(Mouse.isButtonDown(0)){
 				}
 		}
 		
-		if((posX>20 && posX<800) && (posY>380 && posY<400)){
+		if((posX>200 && posX<600) && (posY>380 && posY<400)){
 			if(Mouse.isButtonDown(0)){
 			}
 		}
 		
-		if((posX>20 && posX<800) && (posY>280 && posY<300)){
+		if((posX>200 && posX<600) && (posY>280 && posY<300)){
 			if(Mouse.isButtonDown(0)){
 			}
 			

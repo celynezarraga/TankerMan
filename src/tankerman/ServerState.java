@@ -32,7 +32,7 @@ public class ServerState extends BasicGameState{
 	public void enter(GameContainer arg0, StateBasedGame arg1)
 			throws SlickException {
 		ipPortStringfield = new TextField(arg0, arg0.getDefaultFont(), 100, 180,800,20);
-		console = new TextField(arg0, arg0.getDefaultFont(), 0, 200,800,500);
+		console = new TextField(arg0, arg0.getDefaultFont(), 200, 200,600,500);
 //		ServerStarter server = new ServerStarter(console, ipPortStringfield);
 		GameServer server = new GameServer(console, ipPortStringfield);
 		try {
