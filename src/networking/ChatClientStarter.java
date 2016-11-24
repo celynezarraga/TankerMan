@@ -43,6 +43,8 @@ public class ChatClientStarter extends Thread {
     String ip; String port; 
     TextField connectionInfoField;
     public static Socket client;
+	public static int chatCounter = 0;
+
 
     
     
@@ -133,8 +135,20 @@ public class ChatClientStarter extends Thread {
 	                          /* Send data to the ServerSocket */
 	                    	  
 	                    	   System.out.println("in.readUTF()"+in.readUTF());	                    	   
-	                   			WorldMap.chatMsgsTf.setText(WorldMap.chatMsgsTf.getText().concat(in.readUTF()+"\n"));
-
+//	                   			WorldMap.chatMsgsTf.setText(WorldMap.chatMsgsTf.getText().concat(in.readUTF()+"\n"));
+	                   			
+	                   			String currMessage = WorldMap.chatMsgsTf.getText();
+	                			
+	                			if(chatCounter < 22) {
+	                				WorldMap.chatMsgsTf.setText(currMessage + "\n" + in.readUTF());
+	                				
+	                				
+	                			} else {
+	                				String[] result = currMessage.split("\n", 2);
+	                				WorldMap.chatMsgsTf.setText(result[1] + "\n" + in.readUTF());
+	                				
+	                			}
+	                			chatCounter++;
 	                          
 	                       }
 	                    } catch (Exception e){

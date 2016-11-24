@@ -137,7 +137,6 @@ public class WorldMap extends BasicGameState{
 
 		Input input = gc.getInput();
 		//chat
-		String playerName = client.ClientStarter.playerName;
 		if(input.isKeyDown(Input.KEY_ENTER)){
 			String message = chatFieldTf.getText();
 			
