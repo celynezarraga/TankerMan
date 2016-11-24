@@ -18,6 +18,7 @@ public class GameClient implements Runnable, Constants{
 	String serverData;
 	int startGame = 0;
 	private String port;
+	static int playerID;
 
 	public GameClient(String serverIp, String port, String name) throws Exception{
 		this.server=serverIp;
@@ -80,7 +81,10 @@ public class GameClient implements Runnable, Constants{
 			//Study the following kids. 
 			if (!connected && serverData.startsWith("CONNECTED")){
 				connected=true;
-				System.out.println("Connected.");
+//				System.out.println(serverData);
+				String[] tokens = serverData.split("-");
+				playerID = Integer.parseInt(tokens[1]);
+				System.out.println("ID : " + playerID);
 			}else if (!connected){
 				System.out.println("Connecting..");				
 				send("CONNECT "+name);
@@ -115,6 +119,10 @@ public class GameClient implements Runnable, Constants{
 	
 	public void paintComponent(Graphics g){
 //		g.drawImage(offscreen, 0, 0, null);
+	}
+	
+	public static int getPlayerID(){
+		return playerID;
 	}
 	
 	
