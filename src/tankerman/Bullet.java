@@ -22,10 +22,10 @@ public class Bullet {
 	
 	private static int MAX_LIFETIME = 1800;
 	
-	public Bullet(Vector2f pos, Vector2f spd,String map){
+	public Bullet(Vector2f pos, Vector2f spd,String map)throws Exception{
 		this.pos = pos;
 		this.spd = spd;
-		this.map = 
+		this.map = new TiledMap(map);
 	}
 	
 	public Bullet(){
