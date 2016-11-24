@@ -36,8 +36,8 @@ public class WorldMap extends BasicGameState{
 	private int delta = 0;
 	private int current = 0;
 	
-	int charPositionX = 1;
-	int charPositionY = 2;
+	int charPositionX=1;
+	int charPositionY=1;
 	//float shiftX = charPositionX + 450;
 	//float shiftY = charPositionY + 300;
 	
@@ -55,7 +55,7 @@ public class WorldMap extends BasicGameState{
 	public static TextField chatFieldTf;
 	public static Boolean enterUp = false;
 
-
+	int playerID;
 	
 	
 	
@@ -78,13 +78,11 @@ public class WorldMap extends BasicGameState{
 
 		bullets = new LinkedList<Bullet>();
 
-		
 
 //		if (client.connected()){
 			
 	
 //		}
-		
 		
 	}
 	public void enter(GameContainer gc , StateBasedGame sbg)
@@ -94,17 +92,26 @@ public class WorldMap extends BasicGameState{
 		chatMsgsTf.setBorderColor(Color.white);
 		chatFieldTf = new TextField(gc, gc.getDefaultFont(), 748, 500,243,100);
 		chatFieldTf.setBorderColor(Color.red);
-		//
 		
-		 
+		playerID = networking.GameClient.getPlayerID();
+		
+		if(playerID == 0){
+			charPositionX = 1;
+			charPositionY = 1;
+			character = moveDown;
+		}
+		else if(playerID == 1){
+			charPositionX= 1;
+			charPositionY = 18;
+			character = moveUp;
+		} 
 							    
-
     }
 	
 
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		//map.draw(cameraX, cameraY);
+		
 		map.render(0,0);
 		character.draw(charPositionX * 30, charPositionY * 30);
 		g.drawString("CharacterX: " + charPositionX *30 + " CharY: " + charPositionY*30 , 400, 20);
@@ -114,8 +121,6 @@ public class WorldMap extends BasicGameState{
 		}
 		
 		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 650);
-
-
 
 		chatMsgsTf.deactivate();
 		chatMsgsTf.render(gc, g);
@@ -140,15 +145,8 @@ public class WorldMap extends BasicGameState{
 				chatFieldTf.setText("");
 				networking.ChatClientStarter.send(message);
 			}	
-//			System.out.println("from textfield 	WORLDMAP: "+WorldMap.chatFieldTf.getText());
-
-			
-//			chatFieldTf.setText("");
-			
 		}
-		
-		
-		
+
 		int objectLayer = map.getLayerIndex("Objects");
 		map.getTileId(0,0,objectLayer);
 		Iterator<Bullet> bulletIter = bullets.iterator();
@@ -176,8 +174,7 @@ public class WorldMap extends BasicGameState{
 				bullets.add(new Bullet(new Vector2f((charPositionX*30),(charPositionY*30) + 16), new Vector2f(-((charPositionX*30) - 60),0)));
 			}else if(character == moveRight){
 				bullets.add(new Bullet(new Vector2f((charPositionX*30)+30,(charPositionY*30) + 16), new Vector2f((charPositionX*30)+60,0)));
-			}
-			
+			}	
 		}
 		
 		
@@ -211,16 +208,10 @@ public class WorldMap extends BasicGameState{
 			if(map.getTileId(charPositionX,charPositionY , objectLayer) != 0){
 				charPositionX --;
 			}
-		}
-		
-	
-		
+		}	
 	}
 
 	public int getID() {
 		return 1;
 	}
-	
-	
-	
 }
