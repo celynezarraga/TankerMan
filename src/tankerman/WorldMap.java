@@ -1,11 +1,16 @@
 package tankerman;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.DatagramPacket;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+import networking.ChatClient;
 import networking.ChatClientStarter;
+import networking.Constants;
+import networking.GameClient;
+import networking.GameServer;
 
 import org.newdawn.slick.*;
 import org.newdawn.slick.geom.Vector2f;
@@ -24,11 +29,11 @@ import server.ConnectionManager;
 public class WorldMap extends BasicGameState{
 
 	Animation character, moveUp, moveDown, moveLeft, moveRight;
-	Animation characters[] = new Animation[4];
+	public static Animation characters[] = new Animation[4];
 	
 	private TiledMap map;
 	private InetAddress test;
-	private Tank[] players = new Tank[4];
+	public static Tank[] players = new Tank[4];
 	
 	int[] duration = {200,200};
 	//
@@ -93,6 +98,8 @@ public class WorldMap extends BasicGameState{
 	public void enter(GameContainer gc , StateBasedGame sbg)
             throws SlickException
     {
+		
+		GameServer.gameStage=Constants.GAME_START;
 		chatMsgsTf = new TextField(gc, gc.getDefaultFont(), 748, 0,243,550);
 		chatMsgsTf.setBorderColor(Color.white);
 		chatFieldTf = new TextField(gc, gc.getDefaultFont(), 748, 500,243,100);
@@ -124,6 +131,8 @@ public class WorldMap extends BasicGameState{
 		players[0] = new Tank(test,"Damn",4444,character);
 		players[0].setXpos(charPositionX);
 		players[0].setYpos(charPositionY);
+		
+		
 							    
     }
 	
@@ -145,9 +154,15 @@ public class WorldMap extends BasicGameState{
 		chatMsgsTf.render(gc, g);
 		chatFieldTf.render(gc, g);
 		chatFieldTf.setFocus(true);
+		
+		
+
 	}
 	public void update(GameContainer gc, StateBasedGame sbg, int t) throws SlickException {
 		
+		
+
+//		GameServer.gameStage=Constants.IN_PROGRESS;
 
 		Input input = gc.getInput();
 		//chat
@@ -194,30 +209,41 @@ public class WorldMap extends BasicGameState{
 		
 		
 		if(input.isKeyPressed(Input.KEY_UP)){
+//			send
+			
+//			keyup(objectLayer);
 			players[0].setChar(moveUp);
 			characters[0] = players[0].getChar();
 			players[0].setYpos(players[0].getYpos()-1);
 				if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
 					players[0].setYpos(players[0].getYpos()+1);
 				}
+				////The format: PLAYER <player name> <x> <y>
+				GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getXpos());
 		}
 		
 		if(input.isKeyPressed(Input.KEY_DOWN)){
+//			keydown(objectLayer);
 			players[0].setChar(moveDown);
 			characters[0] = players[0].getChar();
 			players[0].setYpos(players[0].getYpos()+1);
 			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
 				players[0].setYpos(players[0].getYpos()-1);
 			}
+			
+			
+			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getXpos());
 		}
 		
 		if(input.isKeyPressed(Input.KEY_LEFT)){
+//			keyleft(objectLayer);
 			players[0].setChar(moveLeft);
 			characters[0] = players[0].getChar();
 			players[0].setXpos(players[0].getXpos()-1);
 			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
 				players[0].setXpos(players[0].getXpos()+1);
 			}
+			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getXpos());
 		}
 		
 		if(input.isKeyPressed(Input.KEY_RIGHT)){
@@ -227,10 +253,59 @@ public class WorldMap extends BasicGameState{
 			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
 				players[0].setXpos(players[0].getXpos()-1);
 			}
+			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getXpos());
 		}	
+		
+		
+		
+		
+
+		
 	}
+	
+	public void keyup(int objectLayer){
+		players[0].setChar(moveUp);
+		characters[0] = players[0].getChar();
+		players[0].setYpos(players[0].getYpos()-1);
+			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
+				players[0].setYpos(players[0].getYpos()+1);
+			}
+	}
+	public void keydown(int objectLayer){
+
+		players[0].setChar(moveDown);
+		characters[0] = players[0].getChar();
+		players[0].setYpos(players[0].getYpos()+1);
+		if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
+			players[0].setYpos(players[0].getYpos()-1);
+		}
+	}
+	public void keyleft(int objectLayer){
+		players[0].setChar(moveLeft);
+		characters[0] = players[0].getChar();
+		players[0].setXpos(players[0].getXpos()-1);
+		if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
+			players[0].setXpos(players[0].getXpos()+1);
+		}
+	}
+	
 
 	public int getID() {
 		return 1;
 	}
+	
+	/**
+	 * Helper method for sending data to server
+	 * @param msg
+	 */
+	public void send(String msg){
+		try{
+			byte[] buf = msg.getBytes();
+        	InetAddress address = InetAddress.getByName(GameClient.server);
+        	DatagramPacket packet = new DatagramPacket(buf, buf.length, address, Constants.PORT);
+        	GameServer.serverSocket.send(packet);
+        }catch(Exception e){}
+		
+	}
+	
 }

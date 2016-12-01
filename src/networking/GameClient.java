@@ -6,13 +6,15 @@ import java.net.InetAddress;
 
 import org.newdawn.slick.Graphics;
 
+import tankerman.WorldMap;
+
 public class GameClient implements Runnable, Constants{
 
 	int x=10,y=10,xspeed=2,yspeed=2,prevX,prevY;
 	Thread t=new Thread(this);
 	String name="Joseph";
 	String pname;
-	static String server;
+	public static String server;
 	boolean connected=false;
     public static DatagramSocket socket;
 	String serverData;
@@ -101,12 +103,18 @@ public class GameClient implements Runnable, Constants{
 						String pname =playerInfo[1];
 						int x = Integer.parseInt(playerInfo[2]);
 						int y = Integer.parseInt(playerInfo[3]);
-//						//draw on the offscreen image
+//						
+						System.out.println(pname+" x:" +x+ " y:"+y);
+						//draw on the offscreen image						
+//						WorldMap.players[i].setXpos(x);
+//						WorldMap.players[i].setYpos(y);
+						//////here
 //						offscreen.getGraphics().fillOval(x, y, 20, 20);
 //						offscreen.getGraphics().drawString(pname,x-10,y+30);					
 					}
 					//show the changes
 //					frame.repaint();
+					
 				}
 				
 			}			
