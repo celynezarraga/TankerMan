@@ -119,12 +119,11 @@ public class GameServer implements Runnable, Constants{
 					  broadcast("START");
 					  gameStage=IN_PROGRESS;
 					  startTime = System.currentTimeMillis();
-//					  runTimer();
 					  break;
 				  case IN_PROGRESS:
 					  String sec = "0";
 					  long tEnd = System.currentTimeMillis();
-					  long tRes = 180000 -(tEnd - startTime); // time in nanoseconds
+					  long tRes = 18000 -(tEnd - startTime); // time in nanoseconds
 					  int secRemaining = (int) (tRes / 1000) % 60 ;
 					  int minRemaining = (int) ((tRes / (1000*60)) % 60);
 					  if(secRemaining < 10){
@@ -133,10 +132,10 @@ public class GameServer implements Runnable, Constants{
 					  else{
 						  sec = String.valueOf(secRemaining);  
 					  }
-					  broadcast("TIME -"+String.valueOf(minRemaining)+":"+sec);
 					  
 					  if(secRemaining == 0 && minRemaining==0){
 						  broadcast("END");
+						  gameStage=GAME_END;
 					  }
 //					  
 					  //Player data was received!
