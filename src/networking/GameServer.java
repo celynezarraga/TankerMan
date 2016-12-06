@@ -12,21 +12,23 @@ import org.newdawn.slick.gui.TextField;
 // Reference from Circle Wars (Hermocilla)
 
 public class GameServer implements Runnable, Constants{
+	
+	String server="localhost";
 
-	DatagramSocket serverSocket = null;
+	public static DatagramSocket serverSocket = null;
 	Thread t = new Thread(this);
 	String playerData;
 	GameState game;
 	int playerCount=0;
 	int numPlayers;
-	int gameStage=WAITING_FOR_PLAYERS;
+	public static int gameStage=WAITING_FOR_PLAYERS;
 	
 	public GameServer(TextField serverConsole, TextField ipPortStringfield){
 		this.numPlayers = 2;
 		
 		try {
             serverSocket = new DatagramSocket(1337);
-			serverSocket.setSoTimeout(100);
+			serverSocket.setSoTimeout(1000);
 		} catch (IOException e) {
             System.err.println("Could not listen on port: "+1337);
             System.exit(-1);
@@ -66,6 +68,10 @@ public class GameServer implements Runnable, Constants{
 			ioe.printStackTrace();
 		}
 	}
+	
+	
+	//
+	
 	
 	public void run() {
 		while(true){
@@ -110,10 +116,12 @@ public class GameServer implements Runnable, Constants{
 					  gameStage=IN_PROGRESS;
 					  break;
 				  case IN_PROGRESS:
-					  //System.out.println("Game State: IN_PROGRESS");
+//					  System.out.println("Game State: IN_PROGRESS");
 					  
 					  //Player data was received!
 					  if (playerData.startsWith("PLAYER")){
+						  System.out.println("PLAYER");
+						  
 						  //Tokenize:
 						  //The format: PLAYER <player name> <x> <y>
 						  String[] playerInfo = playerData.split(" ");					  
@@ -126,6 +134,7 @@ public class GameServer implements Runnable, Constants{
 						  player.setY(y);
 						  //Update the game state
 						  game.update(pname, player);
+						  System.out.println("pname"+pname+"player.X"+player.getX()+"player.Y"+player.getY());
 						  //Send to all the updated game state
 						  broadcast(game.toString());
 					  }

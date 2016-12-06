@@ -78,7 +78,7 @@ public class ChatServerStarter extends Thread {
                                      }                            	 
                                                            
                             } catch (Exception e){
-                               System.out.print("Error: ChatServerStarter");
+                               System.out.print(e);
                             }
                          }
                       }.start(); 

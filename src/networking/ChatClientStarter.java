@@ -152,7 +152,7 @@ public class ChatClientStarter extends Thread {
 	                          
 	                       }
 	                    } catch (Exception e){
-	                       System.out.println("Error: Receive data from the ServerSocket");
+	                       System.out.println(e);
 	                    };
 	                 }
 	              }.start();
