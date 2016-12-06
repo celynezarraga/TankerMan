@@ -6,6 +6,8 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.newdawn.slick.gui.TextField;
 
@@ -21,6 +23,8 @@ public class GameServer implements Runnable, Constants{
 	GameState game;
 	int playerCount=0;
 	int numPlayers;
+	long startTime, currTime, elapsedTime;
+	int MAX_TIME = 180;
 	public static int gameStage=WAITING_FOR_PLAYERS;
 	
 	public GameServer(TextField serverConsole, TextField ipPortStringfield){
@@ -114,10 +118,27 @@ public class GameServer implements Runnable, Constants{
 					  System.out.println("Game State: START");
 					  broadcast("START");
 					  gameStage=IN_PROGRESS;
+					  startTime = System.currentTimeMillis();
+//					  runTimer();
 					  break;
 				  case IN_PROGRESS:
-//					  System.out.println("Game State: IN_PROGRESS");
+					  String sec = "0";
+					  long tEnd = System.currentTimeMillis();
+					  long tRes = 180000 -(tEnd - startTime); // time in nanoseconds
+					  int secRemaining = (int) (tRes / 1000) % 60 ;
+					  int minRemaining = (int) ((tRes / (1000*60)) % 60);
+					  if(secRemaining < 10){
+						  sec = sec.concat(String.valueOf(secRemaining));
+					  }
+					  else{
+						  sec = String.valueOf(secRemaining);  
+					  }
+					  broadcast("TIME -"+String.valueOf(minRemaining)+":"+sec);
 					  
+					  if(secRemaining == 0 && minRemaining==0){
+						  broadcast("END");
+					  }
+//					  
 					  //Player data was received!
 					  if (playerData.startsWith("PLAYER")){
 						  System.out.println("PLAYER");

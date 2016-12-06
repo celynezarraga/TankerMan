@@ -143,6 +143,7 @@ public class WorldMap extends BasicGameState{
 		map.render(0,0);
 		characters[0].draw(players[0].getXpos() * 30, players[0].getYpos() * 30);
 		g.drawString("CharacterX: " + players[0].getXpos() * 30 + " CharY: " + players[0].getYpos()*30 , 400, 20);
+	
 		
 		for(Bullet b : bullets){
 			b.render(gc, g);
@@ -156,6 +157,10 @@ public class WorldMap extends BasicGameState{
 		chatFieldTf.setFocus(true);
 		
 		
+		if(GameClient.getEndGame()){
+			//scoreboard here
+			System.out.println("TIMES UP!");
+		}
 
 	}
 	public void update(GameContainer gc, StateBasedGame sbg, int t) throws SlickException {
@@ -219,7 +224,7 @@ public class WorldMap extends BasicGameState{
 					players[0].setYpos(players[0].getYpos()+1);
 				}
 				////The format: PLAYER <player name> <x> <y>
-				GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getXpos());
+				GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
 		}
 		
 		if(input.isKeyPressed(Input.KEY_DOWN)){
@@ -232,7 +237,7 @@ public class WorldMap extends BasicGameState{
 			}
 			
 			
-			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getXpos());
+			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
 		}
 		
 		if(input.isKeyPressed(Input.KEY_LEFT)){
@@ -243,7 +248,7 @@ public class WorldMap extends BasicGameState{
 			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
 				players[0].setXpos(players[0].getXpos()+1);
 			}
-			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getXpos());
+			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
 		}
 		
 		if(input.isKeyPressed(Input.KEY_RIGHT)){
@@ -253,7 +258,7 @@ public class WorldMap extends BasicGameState{
 			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
 				players[0].setXpos(players[0].getXpos()-1);
 			}
-			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getXpos());
+			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
 		}	
 		
 		

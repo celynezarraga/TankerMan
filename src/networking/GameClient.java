@@ -15,12 +15,14 @@ public class GameClient implements Runnable, Constants{
 	String name="Joseph";
 	String pname;
 	public static String server;
-	boolean connected=false;
+	static boolean connected=false;
     public static DatagramSocket socket;
 	String serverData;
 	int startGame = 0;
 	private String port;
 	static int playerID;
+	static boolean endGame = false;
+	String timeRemaining;
 
 	public GameClient(String serverIp, String port, String name) throws Exception{
 		this.server=serverIp;
@@ -45,7 +47,7 @@ public class GameClient implements Runnable, Constants{
 //		frame.addKeyListener(new KeyHandler());		
 //		frame.addMouseMotionListener(new MouseMotionHandler());
 
-		//tiime to play
+		//time to play
 		
 		t.start();		
 	}
@@ -96,6 +98,14 @@ public class GameClient implements Runnable, Constants{
 					startGame=1;
 					System.out.println(startGame);
 				}
+				if(serverData.startsWith("END")){
+					endGame = true;
+				}
+				if(serverData.startsWith("TIME")){
+					String[] timeInfo = serverData.split("-");
+					timeRemaining = timeInfo[1];
+					System.out.println(timeRemaining);
+				}
 				if (serverData.startsWith("PLAYER")){
 					String[] playersInfo = serverData.split(":");
 					for (int i=0;i<playersInfo.length;i++){
@@ -133,8 +143,13 @@ public class GameClient implements Runnable, Constants{
 		return playerID;
 	}
 	
+	public static boolean getEndGame(){
+		return endGame;
+	}
 	
-	
+	public static boolean getConnectionStatus(){
+		return connected;
+	}
 	
 //	class MouseMotionHandler extends MouseMotionAdapter{
 //		public void mouseMoved(MouseEvent me){
