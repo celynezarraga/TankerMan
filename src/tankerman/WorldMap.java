@@ -159,7 +159,8 @@ public class WorldMap extends BasicGameState{
 		
 		if(GameClient.getEndGame()){
 			//scoreboard here
-			System.out.println("TIMES UP!");
+//			System.out.println("TIMES UP!");
+			sbg.enterState(5);
 		}
 
 	}

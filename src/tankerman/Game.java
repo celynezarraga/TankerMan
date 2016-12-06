@@ -11,6 +11,7 @@ public class Game extends StateBasedGame{
 	public static final int veryfirstMenu = 2;
 	public static final int serverState = 3;
 	public static final int clientState = 4;
+	public static final int endGame = 5;
 
 	
 
@@ -29,6 +30,7 @@ public class Game extends StateBasedGame{
 		this.addState(new ClientState(clientState));
 		this.addState(new WorldMap(worldMap));
 		this.addState(new MainMenu(startMenu));
+		this.addState(new EndGame(endGame));
 	}
 
 	public static void main(String[] args) {
