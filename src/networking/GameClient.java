@@ -22,7 +22,7 @@ public class GameClient implements Runnable, Constants{
 	private String port;
 	static int playerID;
 	static boolean endGame = false;
-	String timeRemaining;
+	static String timeRemaining;
 
 	public GameClient(String serverIp, String port, String name) throws Exception{
 		this.server=serverIp;
@@ -145,6 +145,10 @@ public class GameClient implements Runnable, Constants{
 	
 	public static boolean getEndGame(){
 		return endGame;
+	}
+	
+	public static String getTime(){
+		return timeRemaining;
 	}
 	
 	public static boolean getConnectionStatus(){
