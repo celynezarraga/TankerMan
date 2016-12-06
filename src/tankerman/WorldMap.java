@@ -149,7 +149,10 @@ public class WorldMap extends BasicGameState{
 			b.render(gc, g);
 		}
 		
-		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 650);
+		String time = GameClient.getTime();
+		if(time!=null){
+			g.drawString(time, 400, 650);
+		}
 
 		chatMsgsTf.deactivate();
 		chatMsgsTf.render(gc, g);
