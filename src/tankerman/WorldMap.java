@@ -185,7 +185,7 @@ public class WorldMap extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
 		map.render(0,0);
-		for(int i=0;i<2;i++){
+		for(int i=0;i<4;i++){
 			characters[i].draw(players[i].getXpos() * 30,players[i].getYpos() * 30);
 		}
 		//characters[0].draw(players[0].getXpos() * 30, players[0].getYpos() * 30);

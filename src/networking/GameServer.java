@@ -28,7 +28,7 @@ public class GameServer implements Runnable, Constants{
 	public static int gameStage=WAITING_FOR_PLAYERS;
 	
 	public GameServer(TextField serverConsole, TextField ipPortStringfield){
-		this.numPlayers = 2;
+		this.numPlayers = 4;
 		
 		try {
             serverSocket = new DatagramSocket(1337);
