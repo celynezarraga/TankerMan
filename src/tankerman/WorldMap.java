@@ -68,18 +68,22 @@ public class WorldMap extends BasicGameState{
 	int playerID;
 	boolean chatEnabled = false;
 	
-	
-public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+
+	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		
 		//chat		
 		//map = new Image("res/sample.jpg");
 		System.out.println("playerID: "+ playerID);
 		map = new TiledMap("res/1.tmx");
-			// Image[] walkUp = null;
-			// Image[] walkDown = null;
-			// Image[] walkLeft = null;
-			// Image[] walkRight = null;
+		Image[] walkUp = {new Image("res/charBack2.png"),new Image("res/charBack2.png")};
+		Image[] walkDown = {new Image("res/charFront2.png"),new Image("res/charFront2.png")};
+		Image[] walkLeft = {new Image("res/charLeft2.png"),new Image("res/charLeft2.png")};
+		Image[] walkRight = {new Image("res/charRight2.png"),new Image("res/charRight2.png")};
 
+		moveUp = new Animation(walkUp,duration,false);
+		moveDown = new Animation(walkDown,duration,false);
+		moveLeft = new Animation(walkLeft,duration,false);
+		moveRight = new Animation(walkRight,duration,false);
 		
 		bullets = new LinkedList<Bullet>();
 
@@ -90,53 +94,11 @@ public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 //		}
 		
 	}
-	public void enter(GameContainer gc , StateBasedGame sbg)
-            throws SlickException
-    {
+	public void enter(GameContainer gc , StateBasedGame sbg) throws SlickException{
 		 playerID = networking.GameClient.getPlayerID();
-		if(playerID == 0){
-			Image[] walkUp = {new Image("res/charFront0.png"),new Image("res/charFront0.png")};
-			Image[] walkDown = {new Image("res/charBack0.png"),new Image("res/charBack0.png")};
-			Image[] walkLeft = {new Image("res/charLeft0.png"),new Image("res/charLeft0.png")};
-			Image[] walkRight = {new Image("res/charRight0.png"),new Image("res/charRight0.png")};
-			moveUp = new Animation(walkUp,duration,false);
-			moveDown = new Animation(walkDown,duration,false);
-			moveLeft = new Animation(walkLeft,duration,false);
-			moveRight = new Animation(walkRight,duration,false);
-		}
-		else if(playerID == 1){
-			Image[] walkUp = {new Image("res/charFront1.png"),new Image("res/charFront1.png")};
-			Image[] walkDown = {new Image("res/charBack1.png"),new Image("res/charBack1.png")};
-			Image[] walkLeft = {new Image("res/charLeft1.png"),new Image("res/charLeft1.png")};
-			Image[] walkRight = {new Image("res/charRight1.png"),new Image("res/charRight1.png")};
-			moveUp = new Animation(walkUp,duration,false);
-			moveDown = new Animation(walkDown,duration,false);
-			moveLeft = new Animation(walkLeft,duration,false);
-			moveRight = new Animation(walkRight,duration,false);
-		}
-		else if(playerID == 2){
-			Image[] walkUp = {new Image("res/charFront2.png"),new Image("res/charFront2.png")};
-			Image[] walkDown = {new Image("res/charBack2.png"),new Image("res/charBack2.png")};
-			Image[] walkLeft = {new Image("res/charLeft2.png"),new Image("res/charLeft2.png")};
-			Image[] walkRight = {new Image("res/charRight2.png"),new Image("res/charRight2.png")};
-			moveUp = new Animation(walkUp,duration,false);
-			moveDown = new Animation(walkDown,duration,false);
-			moveLeft = new Animation(walkLeft,duration,false);
-			moveRight = new Animation(walkRight,duration,false);
-			
-		}
-		else if(playerID == 3){
-			Image[] walkUp = {new Image("res/charFront3.png"),new Image("res/charFront3.png")};
-			Image[] walkDown = {new Image("res/charBack3.png"),new Image("res/charBack3.png")};
-			Image[] walkLeft = {new Image("res/charLeft3.png"),new Image("res/charLeft3.png")};
-			Image[] walkRight = {new Image("res/charRight3.png"),new Image("res/charRight3.png")};
-			moveUp = new Animation(walkUp,duration,false);
-			moveDown = new Animation(walkDown,duration,false);
-			moveLeft = new Animation(walkLeft,duration,false);
-			moveRight = new Animation(walkRight,duration,false);
-		}
 		
-		characters[0] = moveDown;
+		
+//		characters[0] = moveDown;
 		
 		
 		GameServer.gameStage=Constants.GAME_START;
@@ -146,35 +108,28 @@ public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		chatFieldTf.setCursorVisible(false);
 		chatFieldTf.setBorderColor(Color.red);
 		
-//		playerID = networking.GameClient.getPlayerID();
+
+
+		players[0] = new Tank("p1",moveDown,0);
+		players[0].setXpos(1);
+		players[0].setYpos(1);
 		
-		if(playerID == 0){
-			charPositionX = 1;
-			charPositionY = 1;
-			characters[0] = moveDown;
-		}
-		else if(playerID == 1){
-			charPositionX= 1;
-			charPositionY = 18;
-			characters[0] = moveUp;
-		}
-		else if(playerID == 2){
-			charPositionX= 23;
-			charPositionY = 18;
-			characters[0] = moveDown;
-		}
-		else if(playerID == 3){
-			charPositionX= 23;
-			charPositionY = 18;
-			characters[0] = moveUp;
+		players[1] = new Tank("p2",moveUp,1);
+		players[1].setXpos(1);
+		players[1].setYpos(18);
+		
+		players[2] = new Tank("p3",moveUp,2);
+		players[2].setXpos(23);
+		players[2].setYpos(18);
+		
+		players[3] = new Tank("p4",moveDown,3);
+		players[3].setXpos(23);
+		players[3].setYpos(1);
+		
+		for(int i=0;i<4;i++){
+			characters[i] = players[i].getChar();
 		}
 		
-		players[0] = new Tank(test,"Damn",4444,character);
-		players[0].setXpos(charPositionX);
-		players[0].setYpos(charPositionY);
-		
-		
-							    
     }
 	
 
@@ -182,9 +137,13 @@ public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
 		map.render(0,0);
-		characters[0].draw(players[0].getXpos() * 30, players[0].getYpos() * 30);
-		g.drawString("CharacterX: " + players[0].getXpos() * 30 + " CharY: " + players[0].getYpos()*30 , 400, 20);
-	
+		for(int i=0;i<2;i++){
+			characters[i].draw(players[i].getXpos() * 30,players[i].getYpos() * 30);
+		}
+		//characters[0].draw(players[0].getXpos() * 30, players[0].getYpos() * 30);
+		g.drawString("CharacterX: " + players[playerID].getXpos() * 30 + " CharY: " + players[playerID].getYpos()*30 , 400, 20);
+		
+		
 		
 		for(Bullet b : bullets){
 			b.render(gc, g);
@@ -208,11 +167,7 @@ public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 
 	}
 	public void update(GameContainer gc, StateBasedGame sbg, int t) throws SlickException {
-		
-		
-
 //		GameServer.gameStage=Constants.IN_PROGRESS;
-
 		Input input = gc.getInput();
 		
 		if(input.isKeyDown(Input.KEY_TAB)){
@@ -242,6 +197,9 @@ public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 			}else{
 				bulletIter.remove();
 			}
+//			WorldMap.players[i].setXpos(x);
+//			WorldMap.players[i].setYpos(y);
+			
 			
 			if((int)b.getPos().getX() >= 720 || (int)b.getPos().getY() >= 570 || (int)b.getPos().getX() <= 35 || (int)b.getPos().getY() <= 35 ){
 				bulletIter.remove();
@@ -252,14 +210,14 @@ public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		if(gc.getInput().isKeyPressed(Input.KEY_SPACE) && chatEnabled==false){
 			chatFieldTf.setText("");
 			try{
-				if(characters[0] == moveDown){
-					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30) + 23,(players[0].getYpos()*30) + 30), new Vector2f(0,(players[0].getYpos()*30) + 60),map));
-				}else if(characters[0] == moveUp){
-					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30) + 23,(players[0].getYpos()*30)), new Vector2f(0,-((players[0].getYpos()*30) - 60)),map));
-				}else if(characters[0] == moveLeft){
-					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30),(players[0].getYpos()*30) + 16), new Vector2f(-((players[0].getXpos()*30) - 60),0),map));
-				}else if(characters[0] == moveRight){
-					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30)+30,(players[0].getYpos()*30) + 16), new Vector2f((players[0].getXpos()*30)+60,0),map));
+				if(characters[playerID] == moveDown){
+					bullets.add(new Bullet(new Vector2f((players[playerID].getXpos()*30) + 23,(players[playerID].getYpos()*30) + 30), new Vector2f(0,(players[0].getYpos()*30) + 60),map));
+				}else if(characters[playerID] == moveUp){
+					bullets.add(new Bullet(new Vector2f((players[playerID].getXpos()*30) + 23,(players[playerID].getYpos()*30)), new Vector2f(0,-((players[0].getYpos()*30) - 60)),map));
+				}else if(characters[playerID] == moveLeft){
+					bullets.add(new Bullet(new Vector2f((players[playerID].getXpos()*30),(players[playerID].getYpos()*30) + 16), new Vector2f(-((players[0].getXpos()*30) - 60),0),map));
+				}else if(characters[playerID] == moveRight){
+					bullets.add(new Bullet(new Vector2f((players[playerID].getXpos()*30)+30,(players[playerID].getYpos()*30) + 16), new Vector2f((players[0].getXpos()*30)+60,0),map));
 				}
 			}catch(Exception e){}
 		}
@@ -269,77 +227,80 @@ public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 //			send
 			
 //			keyup(objectLayer);
-			players[0].setChar(moveUp);
-			characters[0] = players[0].getChar();
-			players[0].setYpos(players[0].getYpos()-1);
-				if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-					players[0].setYpos(players[0].getYpos()+1);
+			players[playerID].setChar(moveUp);
+			characters[playerID] = players[playerID].getChar();
+			players[playerID].setYpos(players[playerID].getYpos()-1);
+				if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+					players[playerID].setYpos(players[playerID].getYpos()+1);
 				}
 				////The format: PLAYER <player name> <x> <y>
-				GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
+				GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " up");
 		}
 		
 		if(input.isKeyPressed(Input.KEY_DOWN) && chatEnabled==false){
 //			keydown(objectLayer);
-			players[0].setChar(moveDown);
-			characters[0] = players[0].getChar();
-			players[0].setYpos(players[0].getYpos()+1);
-			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-				players[0].setYpos(players[0].getYpos()-1);
+			players[playerID].setChar(moveDown);
+			characters[playerID] = players[playerID].getChar();
+			players[playerID].setYpos(players[playerID].getYpos()+1);
+			if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+				players[playerID].setYpos(players[playerID].getYpos()-1);
 			}
 			
 			
-			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
+			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " down");
 		}
 		
 		if(input.isKeyPressed(Input.KEY_LEFT) && chatEnabled==false){
 //			keyleft(objectLayer);
-			players[0].setChar(moveLeft);
-			characters[0] = players[0].getChar();
-			players[0].setXpos(players[0].getXpos()-1);
-			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-				players[0].setXpos(players[0].getXpos()+1);
+			players[playerID].setChar(moveLeft);
+			characters[playerID] = players[playerID].getChar();
+			players[playerID].setXpos(players[playerID].getXpos()-1);
+			if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+				players[playerID].setXpos(players[playerID].getXpos()+1);
 			}
-			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
+			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " left");
 		}
 		
 		if(input.isKeyPressed(Input.KEY_RIGHT) && chatEnabled==false){
-			players[0].setChar(moveRight);
-			characters[0]= players[0].getChar();
-			players[0].setXpos(players[0].getXpos()+1);
-			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-				players[0].setXpos(players[0].getXpos()-1);
+			
+			players[playerID].setChar(moveRight);
+			characters[playerID]= players[playerID].getChar();
+			players[playerID].setXpos(players[playerID].getXpos()+1);
+			if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+				players[playerID].setXpos(players[playerID].getXpos()-1);
 			}
-			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
+			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos()+ " right");
 		}	
 		
 	}
 	
-	public void keyup(int objectLayer){
-		players[0].setChar(moveUp);
-		characters[0] = players[0].getChar();
-		players[0].setYpos(players[0].getYpos()-1);
-			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-				players[0].setYpos(players[0].getYpos()+1);
-			}
-	}
-	public void keydown(int objectLayer){
-
-		players[0].setChar(moveDown);
-		characters[0] = players[0].getChar();
-		players[0].setYpos(players[0].getYpos()+1);
-		if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-			players[0].setYpos(players[0].getYpos()-1);
-		}
-	}
-	public void keyleft(int objectLayer){
-		players[0].setChar(moveLeft);
-		characters[0] = players[0].getChar();
-		players[0].setXpos(players[0].getXpos()-1);
-		if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-			players[0].setXpos(players[0].getXpos()+1);
-		}
-	}
+	// public void keyup(int objectLayer){
+	// 	playerID = networking.GameClient.getPlayerID();
+	// 	players[playerID].setChar(moveUp);
+	// 	characters[playerID] = players[playerID].getChar();
+	// 	players[playerID].setYpos(players[playerID].getYpos()-1);
+	// 		if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+	// 			players[playerID].setYpos(players[playerID].getYpos()+1);
+	// 		}
+	// }
+	// public void keydown(int objectLayer){
+	// 	playerID = networking.GameClient.getPlayerID();
+	// 	players[playerID].setChar(moveDown);
+	// 	characters[playerID] = players[playerID].getChar();
+	// 	players[playerID].setYpos(players[playerID].getYpos()+1);
+	// 	if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+	// 		players[0].setYpos(players[0].getYpos()-1);
+	// 	}
+	// }
+	// public void keyleft(int objectLayer){
+	// 	playerID = networking.GameClient.getPlayerID();
+	// 	players[playerID].setChar(moveLeft);
+	// 	characters[playerID] = players[playerID].getChar();
+	// 	players[playerID].setXpos(players[playerID].getXpos()-1);
+	// 	if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+	// 		players[playerID].setXpos(players[playerID].getXpos()+1);
+	// 	}
+	// }
 	
 
 	public int getID() {

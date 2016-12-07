@@ -4,7 +4,9 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Image;
 
 import tankerman.WorldMap;
 
@@ -23,32 +25,47 @@ public class GameClient implements Runnable, Constants{
 	static int playerID;
 	static boolean endGame = false;
 	static String timeRemaining;
+	
+	private int[] duration = {200,200};
+	
+	private Image[] walkUp;
+	private Image[] walkDown;
+	private Image[] walkLeft;
+	private Image[] walkRight;
 
+	private Image[] walkUp1 = {new Image("res/charFront0.png"),new Image("res/charFront0.png")};
+	private Image[] walkDown1 = {new Image("res/charBack0.png"),new Image("res/charBack0.png")};
+	private Image[] walkLeft1 = {new Image("res/charLeft0.png"),new Image("res/charLeft0.png")};
+	private Image[] walkRight1 = {new Image("res/charRight0.png"),new Image("res/charRight0.png")};
+	
+	private Image[] walkUp2 = {new Image("res/charFront1.png"),new Image("res/charFront1.png")};
+	private Image[] walkDown2 = {new Image("res/charBack1.png"),new Image("res/charBack1.png")};
+	private Image[] walkLeft2 = {new Image("res/charLeft1.png"),new Image("res/charLeft1.png")};
+	private Image[] walkRight2 = {new Image("res/charRight1.png"),new Image("res/charRight1.png")};
+	
+	private Image[] walkUp3 = {new Image("res/charFront2.png"),new Image("res/charFront2.png")};
+	private Image[] walkDown3 = {new Image("res/charBack2.png"),new Image("res/charBack2.png")};
+	private Image[] walkLeft3 = {new Image("res/charLeft2.png"),new Image("res/charLeft2.png")};
+	private Image[] walkRight3 = {new Image("res/charRight2.png"),new Image("res/charRight2.png")};
+	
+	private Image[] walkUp4 = {new Image("res/charFront3.png"),new Image("res/charFront3.png")};
+	private Image[] walkDown4 = {new Image("res/charBack3.png"),new Image("res/charBack3.png")};
+	private Image[] walkLeft4 = {new Image("res/charLeft3.png"),new Image("res/charLeft3.png")};
+	private Image[] walkRight4 = {new Image("res/charRight3.png"),new Image("res/charRight3.png")};
+	
+	private Animation moveUp;
+	private Animation moveDown;
+	private Animation moveLeft;
+	private Animation moveRight;
+	
+	
+	
 	public GameClient(String serverIp, String port, String name) throws Exception{
 		this.server=serverIp;
 		this.name=name;
 		this.port=port;
 		socket = new DatagramSocket();
-		
-//		frame.setTitle(APP_NAME+":"+name);
-		//set some timeout for the socket
-		socket.setSoTimeout(100);
-		
-//		//Some gui stuff i hate.
-//		frame.getContentPane().add(this);
-//		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//		frame.setSize(640, 480);
-//		frame.setVisible(true);
-//		
-//		//create the buffer
-//		offscreen=(BufferedImage)this.createImage(640, 480);
-//		
-//		//Some gui stuff again...
-//		frame.addKeyListener(new KeyHandler());		
-//		frame.addMouseMotionListener(new MouseMotionHandler());
-
-		//time to play
-		
+		socket.setSoTimeout(100);	
 		t.start();		
 	}
 	
@@ -78,10 +95,6 @@ public class GameClient implements Runnable, Constants{
 			serverData=new String(buf);
 			serverData=serverData.trim();
 			
-//			if (!serverData.equals("")){
-//				System.out.println("Server Data:" +serverData);
-//			}
-
 			//Study the following kids. 
 			if (!connected && serverData.startsWith("CONNECTED")){
 				connected=true;
@@ -89,6 +102,37 @@ public class GameClient implements Runnable, Constants{
 				String[] tokens = serverData.split("-");
 				playerID = Integer.parseInt(tokens[1]);
 				System.out.println("ID : " + playerID);
+				
+				if(playerID == 0){
+					walkUp = walkUp1;
+					walkDown = walkDown1;
+					walkRight = walkRight1;
+					walkLeft = walkLeft1;
+				}
+				else if(playerID == 1){
+					walkUp = walkUp2;
+					walkDown = walkDown2;
+					walkRight = walkRight2;
+					walkLeft = walkLeft2;
+				}
+				else if(playerID == 2){
+					walkUp = walkUp3;
+					walkDown = walkDown3;
+					walkRight = walkRight3;
+					walkLeft = walkLeft3;
+				}
+				else if(playerID == 3){
+					walkUp = walkUp4;
+					walkDown = walkDown4;
+					walkRight = walkRight4;
+					walkLeft = walkLeft4;
+				}
+				
+				moveUp = new Animation(walkUp,duration,false);
+				moveDown = new Animation(walkDown,duration,false);
+				moveLeft = new Animation(walkLeft,duration,false);
+				moveRight = new Animation(walkRight,duration,false);
+				
 			}else if (!connected){
 				System.out.println("Connecting..");				
 				send("CONNECT "+name);
@@ -104,31 +148,37 @@ public class GameClient implements Runnable, Constants{
 				if(serverData.startsWith("TIME")){
 					String[] timeInfo = serverData.split("-");
 					timeRemaining = timeInfo[1];
-//					System.out.println(timeRemaining);
-				}
+					}
 				if (serverData.startsWith("PLAYER")){
 					String[] playersInfo = serverData.split(":");
 					for (int i=0;i<playersInfo.length;i++){
 						String[] playerInfo = playersInfo[i].split(" ");
-						String pname =playerInfo[1];
+						int id =Integer.parseInt(playerInfo[1]);
 						int x = Integer.parseInt(playerInfo[2]);
 						int y = Integer.parseInt(playerInfo[3]);
-//						
-						System.out.println(pname+" x:" +x+ " y:"+y);
-						//draw on the offscreen image						
-//						WorldMap.players[i].setXpos(x);
-//						WorldMap.players[i].setYpos(y);
-						//////here
-//						offscreen.getGraphics().fillOval(x, y, 20, 20);
-//						offscreen.getGraphics().drawString(pname,x-10,y+30);					
-					}
-					//show the changes
-//					frame.repaint();
+						String character = playerInfo[4];
+						WorldMap.players[id].setXpos(x);
+						WorldMap.players[id].setYpos(y);
+						
+						if(character.equals("up")){
+							WorldMap.players[id].setChar(moveUp);
+							WorldMap.characters[id] = WorldMap.players[id].getChar();
+						}else if(character.equals("down")){
+							WorldMap.players[id].setChar(moveDown);
+							WorldMap.characters[id] = WorldMap.players[id].getChar();
+						}else if(character.equals("left")){
+							WorldMap.players[id].setChar(moveLeft);
+							WorldMap.characters[id] = WorldMap.players[id].getChar();
+						}else if(character.equals("right")){
+							WorldMap.players[id].setChar(moveRight);
+							WorldMap.characters[id] = WorldMap.players[id].getChar();
+						}
 					
 				}
 				
 			}			
 		}
+	}
 	}
 	
 	public int getStartGame(){
