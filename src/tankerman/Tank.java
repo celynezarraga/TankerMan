@@ -6,6 +6,7 @@ import org.newdawn.slick.Animation;
 import java.net.*;
 
 public class Tank {
+	private int userId;
 	private int xpos;
 	private int ypos;
 	private Bullet[] bullets;
@@ -14,12 +15,16 @@ public class Tank {
 	private int port;
 	private Animation character;
 	
-	public Tank(InetAddress address,String name,int port, Animation character){
+	public Tank(String name,Animation character,int id){
 		this.address = address;
-		this.port = port;
 		this.name = name;
 		this.bullets = new Bullet[3];
 		this.character = character;
+		this.userId = id;
+	}
+	
+	public int getUserId(){
+		return userId;
 	}
 	
 	public Animation getChar(){
@@ -52,6 +57,10 @@ public class Tank {
 	
 	public void setYpos(int y){
 		this.ypos = y;
+	}
+	
+	public void setId(int id){
+		this.userId = id;
 	}
 	
 	public void setChar(Animation c){

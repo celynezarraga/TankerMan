@@ -67,9 +67,6 @@ public class WorldMap extends BasicGameState{
 
 	int playerID;
 	
-	
-	
-
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		
 		//chat		
@@ -106,34 +103,26 @@ public class WorldMap extends BasicGameState{
 		chatFieldTf.setBorderColor(Color.red);
 		
 		playerID = networking.GameClient.getPlayerID();
+
+		players[0] = new Tank("p1",moveDown,0);
+		players[0].setXpos(1);
+		players[0].setYpos(1);
 		
-		if(playerID == 0){
-			charPositionX = 1;
-			charPositionY = 1;
-			characters[0] = moveDown;
-		}
-		else if(playerID == 1){
-			charPositionX= 1;
-			charPositionY = 18;
-			characters[0] = moveUp;
-		}
-		else if(playerID == 2){
-			charPositionX= 23;
-			charPositionY = 18;
-			characters[0] = moveDown;
-		}
-		else if(playerID == 3){
-			charPositionX= 23;
-			charPositionY = 18;
-			characters[0] = moveUp;
-		}
+		players[1] = new Tank("p2",moveUp,1);
+		players[1].setXpos(1);
+		players[1].setYpos(18);
 		
-		players[0] = new Tank(test,"Damn",4444,character);
-		players[0].setXpos(charPositionX);
-		players[0].setYpos(charPositionY);
+		players[2] = new Tank("p3",moveUp,2);
+		players[2].setXpos(23);
+		players[2].setYpos(18);
 		
+		players[3] = new Tank("p4",moveDown,3);
+		players[3].setXpos(23);
+		players[3].setYpos(1);
 		
-							    
+		for(int i=0;i<4;i++){
+			characters[i] = players[i].getChar();
+		}
     }
 	
 
@@ -141,9 +130,13 @@ public class WorldMap extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
 		map.render(0,0);
-		characters[0].draw(players[0].getXpos() * 30, players[0].getYpos() * 30);
-		g.drawString("CharacterX: " + players[0].getXpos() * 30 + " CharY: " + players[0].getYpos()*30 , 400, 20);
-	
+		for(int i=0;i<2;i++){
+			characters[i].draw(players[i].getXpos() * 30,players[i].getYpos() * 30);
+		}
+		//characters[0].draw(players[0].getXpos() * 30, players[0].getYpos() * 30);
+		g.drawString("CharacterX: " + players[playerID].getXpos() * 30 + " CharY: " + players[playerID].getYpos()*30 , 400, 20);
+		
+		
 		
 		for(Bullet b : bullets){
 			b.render(gc, g);
@@ -168,11 +161,7 @@ public class WorldMap extends BasicGameState{
 
 	}
 	public void update(GameContainer gc, StateBasedGame sbg, int t) throws SlickException {
-		
-		
-
 //		GameServer.gameStage=Constants.IN_PROGRESS;
-
 		Input input = gc.getInput();
 		//chat
 		if(input.isKeyDown(Input.KEY_ENTER)){
@@ -195,6 +184,9 @@ public class WorldMap extends BasicGameState{
 			}else{
 				bulletIter.remove();
 			}
+//			WorldMap.players[i].setXpos(x);
+//			WorldMap.players[i].setYpos(y);
+			
 			
 			if((int)b.getPos().getX() >= 720 || (int)b.getPos().getY() >= 570 || (int)b.getPos().getX() <= 35 || (int)b.getPos().getY() <= 35 ){
 				bulletIter.remove();
@@ -204,14 +196,14 @@ public class WorldMap extends BasicGameState{
 		
 		if(gc.getInput().isKeyPressed(Input.KEY_SPACE)){
 			try{
-				if(characters[0] == moveDown){
-					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30) + 23,(players[0].getYpos()*30) + 30), new Vector2f(0,(players[0].getYpos()*30) + 60),map));
-				}else if(characters[0] == moveUp){
-					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30) + 23,(players[0].getYpos()*30)), new Vector2f(0,-((players[0].getYpos()*30) - 60)),map));
-				}else if(characters[0] == moveLeft){
-					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30),(players[0].getYpos()*30) + 16), new Vector2f(-((players[0].getXpos()*30) - 60),0),map));
-				}else if(characters[0] == moveRight){
-					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30)+30,(players[0].getYpos()*30) + 16), new Vector2f((players[0].getXpos()*30)+60,0),map));
+				if(characters[playerID] == moveDown){
+					bullets.add(new Bullet(new Vector2f((players[playerID].getXpos()*30) + 23,(players[playerID].getYpos()*30) + 30), new Vector2f(0,(players[0].getYpos()*30) + 60),map));
+				}else if(characters[playerID] == moveUp){
+					bullets.add(new Bullet(new Vector2f((players[playerID].getXpos()*30) + 23,(players[playerID].getYpos()*30)), new Vector2f(0,-((players[0].getYpos()*30) - 60)),map));
+				}else if(characters[playerID] == moveLeft){
+					bullets.add(new Bullet(new Vector2f((players[playerID].getXpos()*30),(players[playerID].getYpos()*30) + 16), new Vector2f(-((players[0].getXpos()*30) - 60),0),map));
+				}else if(characters[playerID] == moveRight){
+					bullets.add(new Bullet(new Vector2f((players[playerID].getXpos()*30)+30,(players[playerID].getYpos()*30) + 16), new Vector2f((players[0].getXpos()*30)+60,0),map));
 				}
 			}catch(Exception e){}
 		}
@@ -221,48 +213,48 @@ public class WorldMap extends BasicGameState{
 //			send
 			
 //			keyup(objectLayer);
-			players[0].setChar(moveUp);
-			characters[0] = players[0].getChar();
-			players[0].setYpos(players[0].getYpos()-1);
-				if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-					players[0].setYpos(players[0].getYpos()+1);
+			players[playerID].setChar(moveUp);
+			characters[playerID] = players[playerID].getChar();
+			players[playerID].setYpos(players[playerID].getYpos()-1);
+				if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+					players[playerID].setYpos(players[playerID].getYpos()+1);
 				}
 				////The format: PLAYER <player name> <x> <y>
-				GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
+				GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " up");
 		}
 		
 		if(input.isKeyPressed(Input.KEY_DOWN)){
 //			keydown(objectLayer);
-			players[0].setChar(moveDown);
-			characters[0] = players[0].getChar();
-			players[0].setYpos(players[0].getYpos()+1);
-			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-				players[0].setYpos(players[0].getYpos()-1);
+			players[playerID].setChar(moveDown);
+			characters[playerID] = players[playerID].getChar();
+			players[playerID].setYpos(players[playerID].getYpos()+1);
+			if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+				players[playerID].setYpos(players[playerID].getYpos()-1);
 			}
 			
 			
-			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
+			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " down");
 		}
 		
 		if(input.isKeyPressed(Input.KEY_LEFT)){
 //			keyleft(objectLayer);
-			players[0].setChar(moveLeft);
-			characters[0] = players[0].getChar();
-			players[0].setXpos(players[0].getXpos()-1);
-			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-				players[0].setXpos(players[0].getXpos()+1);
+			players[playerID].setChar(moveLeft);
+			characters[playerID] = players[playerID].getChar();
+			players[playerID].setXpos(players[playerID].getXpos()-1);
+			if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+				players[playerID].setXpos(players[playerID].getXpos()+1);
 			}
-			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
+			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " left");
 		}
 		
 		if(input.isKeyPressed(Input.KEY_RIGHT)){
-			players[0].setChar(moveRight);
-			characters[0]= players[0].getChar();
-			players[0].setXpos(players[0].getXpos()+1);
-			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-				players[0].setXpos(players[0].getXpos()-1);
+			players[playerID].setChar(moveRight);
+			characters[playerID]= players[playerID].getChar();
+			players[playerID].setXpos(players[playerID].getXpos()+1);
+			if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+				players[playerID].setXpos(players[playerID].getXpos()-1);
 			}
-			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
+			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos()+ " right");
 		}	
 		
 		
@@ -273,28 +265,30 @@ public class WorldMap extends BasicGameState{
 	}
 	
 	public void keyup(int objectLayer){
-		players[0].setChar(moveUp);
-		characters[0] = players[0].getChar();
-		players[0].setYpos(players[0].getYpos()-1);
-			if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-				players[0].setYpos(players[0].getYpos()+1);
+		playerID = networking.GameClient.getPlayerID();
+		players[playerID].setChar(moveUp);
+		characters[playerID] = players[playerID].getChar();
+		players[playerID].setYpos(players[playerID].getYpos()-1);
+			if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+				players[playerID].setYpos(players[playerID].getYpos()+1);
 			}
 	}
 	public void keydown(int objectLayer){
-
-		players[0].setChar(moveDown);
-		characters[0] = players[0].getChar();
-		players[0].setYpos(players[0].getYpos()+1);
-		if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
+		playerID = networking.GameClient.getPlayerID();
+		players[playerID].setChar(moveDown);
+		characters[playerID] = players[playerID].getChar();
+		players[playerID].setYpos(players[playerID].getYpos()+1);
+		if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
 			players[0].setYpos(players[0].getYpos()-1);
 		}
 	}
 	public void keyleft(int objectLayer){
-		players[0].setChar(moveLeft);
-		characters[0] = players[0].getChar();
-		players[0].setXpos(players[0].getXpos()-1);
-		if(map.getTileId(players[0].getXpos(),players[0].getYpos() , objectLayer) != 0){
-			players[0].setXpos(players[0].getXpos()+1);
+		playerID = networking.GameClient.getPlayerID();
+		players[playerID].setChar(moveLeft);
+		characters[playerID] = players[playerID].getChar();
+		players[playerID].setXpos(players[playerID].getXpos()-1);
+		if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+			players[playerID].setXpos(players[playerID].getXpos()+1);
 		}
 	}
 	
