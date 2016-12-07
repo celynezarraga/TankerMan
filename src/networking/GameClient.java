@@ -3,6 +3,7 @@ package networking;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.util.ArrayList;
 
 import org.newdawn.slick.Animation;
 import org.newdawn.slick.Graphics;
@@ -28,10 +29,10 @@ public class GameClient implements Runnable, Constants{
 	
 	private int[] duration = {200,200};
 	
-	private Image[] walkUp;
-	private Image[] walkDown;
-	private Image[] walkLeft;
-	private Image[] walkRight;
+	private static Image[] walkUp;
+	private static Image[] walkDown;
+	private static Image[] walkLeft;
+	private static Image[] walkRight;
 
 	private Image[] walkUp1 = {new Image("res/charFront0.png"),new Image("res/charFront0.png")};
 	private Image[] walkDown1 = {new Image("res/charBack0.png"),new Image("res/charBack0.png")};
@@ -58,7 +59,7 @@ public class GameClient implements Runnable, Constants{
 	private Animation moveLeft;
 	private Animation moveRight;
 	
-	
+	private static ArrayList<Image[]> images = new ArrayList<Image[]>();
 	
 	public GameClient(String serverIp, String port, String name) throws Exception{
 		this.server=serverIp;
@@ -95,10 +96,8 @@ public class GameClient implements Runnable, Constants{
 			serverData=new String(buf);
 			serverData=serverData.trim();
 			
-			//Study the following kids. 
 			if (!connected && serverData.startsWith("CONNECTED")){
 				connected=true;
-//				System.out.println(serverData);
 				String[] tokens = serverData.split("-");
 				playerID = Integer.parseInt(tokens[1]);
 				System.out.println("ID : " + playerID);
@@ -137,7 +136,6 @@ public class GameClient implements Runnable, Constants{
 				System.out.println("Connecting..");				
 				send("CONNECT "+name);
 			}else if (connected){
-//				offscreen.getGraphics().clearRect(0, 0, 640, 480);
 				if(startGame==0 && serverData.startsWith("START")){
 					startGame=1;
 					System.out.println(startGame);
@@ -185,10 +183,6 @@ public class GameClient implements Runnable, Constants{
 		return startGame;
 	}
 	
-	public void paintComponent(Graphics g){
-//		g.drawImage(offscreen, 0, 0, null);
-	}
-	
 	public static int getPlayerID(){
 		return playerID;
 	}
@@ -204,28 +198,12 @@ public class GameClient implements Runnable, Constants{
 	public static boolean getConnectionStatus(){
 		return connected;
 	}
+	public static ArrayList<Image[]> getAnimations(){
+		images.add(walkUp);
+		images.add(walkDown);
+		images.add(walkLeft);
+		images.add(walkRight);
+		return images;	
+	}
 	
-//	class MouseMotionHandler extends MouseMotionAdapter{
-//		public void mouseMoved(MouseEvent me){
-//			x=me.getX();y=me.getY();
-//			if (prevX != x || prevY != y){
-//				send("PLAYER "+name+" "+x+" "+y);
-//			}				
-//		}
-//	}
-//	
-//	class KeyHandler extends KeyAdapter{
-//		public void keyPressed(KeyEvent ke){
-//			prevX=x;prevY=y;
-//			switch (ke.getKeyCode()){
-//			case KeyEvent.VK_DOWN:y+=yspeed;break;
-//			case KeyEvent.VK_UP:y-=yspeed;break;
-//			case KeyEvent.VK_LEFT:x-=xspeed;break;
-//			case KeyEvent.VK_RIGHT:x+=xspeed;break;
-//			}
-//			if (prevX != x || prevY != y){
-//				send("PLAYER "+name+" "+x+" "+y);
-//			}	
-//		}
-//	}
 }
