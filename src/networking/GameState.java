@@ -10,7 +10,7 @@ import java.util.Map;
 public class GameState{
 	
 	private Map players=new HashMap();
-	private ArrayList<String> playerNames = new ArrayList<String>();
+	private static ArrayList<String> playerNames = new ArrayList<String>();
 	
 	public GameState(){}
 	
@@ -35,5 +35,9 @@ public class GameState{
 	
 	public int getPlayerID(String name){
 		return playerNames.indexOf(name);
+	}
+	
+	public static String getPlayername(int index){
+		return playerNames.get(index);
 	}
 }

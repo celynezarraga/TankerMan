@@ -8,6 +8,7 @@ import java.net.*;
 
 public class Tank {
 	private int userId;
+	public int team;
 	private int xpos;
 	private int ypos;
 	private Bullet[] bullets;

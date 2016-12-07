@@ -155,65 +155,212 @@ public class GameClient implements Runnable, Constants{
 						int x = Integer.parseInt(playerInfo[2]);
 						int y = Integer.parseInt(playerInfo[3]);
 						String character = playerInfo[4];
+						int team = Integer.parseInt(playerInfo[5]);
 						WorldMap.players[id].setXpos(x);
 						WorldMap.players[id].setYpos(y);
+						WorldMap.players[id].team = team;
+
 						
 						if(character.equals("up")){
 							if(id==0){
+								if(team==1){
+									walkUp1=walkUp2;
+								}
+								else if(team==2){
+									walkUp1=walkUp3;
+								}
+								else if(team==3){
+									walkUp1=walkUp4;
+								}
 								moveUp = new Animation(walkUp1,duration,false);
 							}
 							else if(id==1){
+								if(team==0){
+									walkUp2=walkUp1;
+								}
+								else if(team==2){
+									walkUp2=walkUp3;
+								}
+								else if(team==3){
+									walkUp2=walkUp4;
+								}
 								moveUp = new Animation(walkUp2,duration,false);
 							}
 							else if(id==2){
+								if(team==0){
+									walkUp3=walkUp1;
+								}
+								else if(team==1){
+									walkUp3=walkUp2;
+								}
+								else if(team==3){
+									walkUp3=walkUp4;
+								}
 								moveUp = new Animation(walkUp3,duration,false);
 							}
 							else if(id==3){
+								if(team==0){
+									walkUp4=walkUp1;
+								}
+								else if(team==1){
+									walkUp4=walkUp2;
+								}
+								else if(team==2){
+									walkUp4=walkUp3;
+								}
 								moveUp = new Animation(walkUp4,duration,false);
 							}
 							WorldMap.players[id].setChar(moveUp);
 							WorldMap.characters[id] = WorldMap.players[id].getChar();
 						}else if(character.equals("down")){
 							if(id==0){
+								if(team==1){
+									walkDown1=walkDown2;
+								}
+								else if(team==2){
+									walkDown1=walkDown3;
+								}
+								else if(team==3){
+									walkDown1=walkDown4;
+								}
 								moveDown = new Animation(walkDown1,duration,false);
 							}
 							else if(id==1){
+								if(team==0){
+									walkDown2=walkDown1;
+								}
+								else if(team==2){
+									walkDown2=walkDown3;
+								}
+								else if(team==3){
+									walkDown2=walkDown4;
+								}
 								moveDown = new Animation(walkDown2,duration,false);
 							}
 							else if(id==2){
+								if(team==0){
+									walkDown3=walkDown1;
+								}
+								else if(team==1){
+									walkDown3=walkDown2;
+								}
+								else if(team==3){
+									walkDown3=walkDown4;
+								}
 								moveDown = new Animation(walkDown3,duration,false);
 							}
 							else if(id==3){
+								if(team==0){
+									walkDown4=walkDown1;
+								}
+								else if(team==1){
+									walkDown4=walkDown2;
+								}
+								else if(team==2){
+									walkDown4=walkDown3;
+								}
 								moveDown = new Animation(walkDown4,duration,false);
 							}
 							WorldMap.players[id].setChar(moveDown);
 							WorldMap.characters[id] = WorldMap.players[id].getChar();
 						}else if(character.equals("left")){
 							if(id==0){
+								if(team==1){
+									walkLeft1=walkLeft2;
+								}
+								else if(team==2){
+									walkLeft1=walkLeft3;
+								}
+								else if(team==3){
+									walkLeft1=walkLeft4;
+								}
 								moveLeft = new Animation(walkLeft1,duration,false);
 							}
 							else if(id==1){
+								if(team==0){
+									walkLeft2=walkLeft1;
+								}
+								else if(team==2){
+									walkLeft2=walkLeft3;
+								}
+								else if(team==3){
+									walkLeft2=walkLeft4;
+								}
 								moveLeft = new Animation(walkLeft2,duration,false);
 							}
 							else if(id==2){
+								if(team==0){
+									walkLeft3=walkLeft1;
+								}
+								else if(team==1){
+									walkLeft3=walkLeft2;
+								}
+								else if(team==3){
+									walkLeft3=walkLeft4;
+								}
 								moveLeft = new Animation(walkLeft3,duration,false);
 							}
 							else if(id==3){
+								if(team==0){
+									walkLeft4=walkLeft1;
+								}
+								else if(team==1){
+									walkLeft4=walkLeft2;
+								}
+								else if(team==2){
+									walkLeft4=walkLeft3;
+								}
 								moveLeft = new Animation(walkLeft4,duration,false);
 							}
 							WorldMap.players[id].setChar(moveLeft);
 							WorldMap.characters[id] = WorldMap.players[id].getChar();
 						}else if(character.equals("right")){
 							if(id==0){
+								if(team==1){
+									walkRight1=walkRight2;
+								}
+								else if(team==2){
+									walkRight1=walkRight3;
+								}
+								else if(team==3){
+									walkRight1=walkRight4;
+								}
 								moveRight = new Animation(walkRight1,duration,false);
 							}
 							else if(id==1){
+								if(team==0){
+									walkRight2=walkRight1;
+								}
+								else if(team==2){
+									walkRight2=walkRight3;
+								}
+								else if(team==3){
+									walkRight2=walkRight4;
+								}
 								moveRight = new Animation(walkRight2,duration,false);
 							}
 							else if(id==2){
+								if(team==0){
+									walkRight3=walkRight1;
+								}
+								else if(team==1){
+									walkRight3=walkRight2;
+								}
+								else if(team==3){
+									walkRight3=walkRight4;
+								}
 								moveRight = new Animation(walkRight3,duration,false);
 							}
 							else if(id==3){
+								if(team==0){
+									walkRight4=walkRight1;
+								}
+								else if(team==1){
+									walkRight4=walkRight2;
+								}
+								else if(team==2){
+									walkRight4=walkRight3;
+								}
 								moveRight = new Animation(walkRight4,duration,false);
 							}
 							WorldMap.players[id].setChar(moveRight);

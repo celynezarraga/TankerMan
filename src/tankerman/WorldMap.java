@@ -6,6 +6,7 @@ import java.net.DatagramPacket;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.Random;
 
 import networking.ChatClient;
 import networking.ChatClientStarter;
@@ -156,18 +157,22 @@ public class WorldMap extends BasicGameState{
 		players[0] = new Tank("p1",moveDown,tank1,0);
 		players[0].setXpos(1);
 		players[0].setYpos(1);
+		players[0].team = 0;
 		
 		players[1] = new Tank("p2",moveUp,tank2,1);
 		players[1].setXpos(1);
 		players[1].setYpos(18);
+		players[1].team = 1;
 		
 		players[2] = new Tank("p3",moveUp,tank3,2);
 		players[2].setXpos(23);
 		players[2].setYpos(18);
+		players[2].team = 2;
 		
 		players[3] = new Tank("p4",moveDown,tank4,3);
 		players[3].setXpos(23);
 		players[3].setYpos(1);
+		players[3].team = 3;
 		
 		for(int i=0;i<4;i++){
 			characters[i] = players[i].getChar();
@@ -180,7 +185,7 @@ public class WorldMap extends BasicGameState{
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		
 		map.render(0,0);
-		for(int i=0;i<4;i++){
+		for(int i=0;i<2;i++){
 			characters[i].draw(players[i].getXpos() * 30,players[i].getYpos() * 30);
 		}
 		//characters[0].draw(players[0].getXpos() * 30, players[0].getYpos() * 30);
@@ -283,11 +288,20 @@ public class WorldMap extends BasicGameState{
 					
 					if(flag){
 						players[playerID].setYpos(players[playerID].getYpos()+1);
+						Random randy = new Random();
+						int rng = randy.nextInt(10);
+						if(rng >= 4){
+							players[playerID].team = players[i].team;
+						}else{
+							players[i].team = players[playerID].team;
+						}
+						GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " up " + players[playerID].team);
+						GameClient.send("PLAYER "+ i +" "+players[i].getXpos()+" "+players[i].getYpos() + " up " + players[i].team);
 						flag = false;
 					}
 				}
 				////The format: PLAYER <player name> <x> <y>
-				GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " up");
+				GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " up " + players[playerID].team);
 		}
 		
 		if(input.isKeyPressed(Input.KEY_DOWN)&& chatEnabled==false){
@@ -310,12 +324,21 @@ public class WorldMap extends BasicGameState{
 				
 				if(flag){
 					players[playerID].setYpos(players[playerID].getYpos()-1);
+					Random randy = new Random();
+					int rng = randy.nextInt(10);
+					if(rng >= 4){
+						players[playerID].team = players[i].team;
+					}else{
+						players[i].team = players[playerID].team;
+					}
+					GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " down " + players[playerID].team);
+					GameClient.send("PLAYER "+ i +" "+players[i].getXpos()+" "+players[i].getYpos() + " down " + players[i].team);
 					flag = false;
 				}
 			}
 			
 			
-			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " down");
+			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " down " + players[playerID].team);
 		}
 		
 		if(input.isKeyPressed(Input.KEY_LEFT)&& chatEnabled==false){
@@ -339,10 +362,19 @@ public class WorldMap extends BasicGameState{
 				
 				if(flag){
 					players[playerID].setXpos(players[playerID].getXpos()+1);
+					Random randy = new Random();
+					int rng = randy.nextInt(10);
+					if(rng >= 4){
+						players[playerID].team = players[i].team;
+					}else{
+						players[i].team = players[playerID].team;
+					}
+					GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " left " + players[playerID].team);
+					GameClient.send("PLAYER "+ i +" "+players[i].getXpos()+" "+players[i].getYpos() + " left " + players[i].team);
 					flag = false;
 				}
 			}
-			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " left");
+			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " left " + players[playerID].team);
 		}
 		
 		if(input.isKeyPressed(Input.KEY_RIGHT)&& chatEnabled==false){
@@ -365,12 +397,49 @@ public class WorldMap extends BasicGameState{
 				
 				if(flag){
 					players[playerID].setXpos(players[playerID].getXpos()-1);
+					Random randy = new Random();
+					int rng = randy.nextInt(10);
+					if(rng >= 4){
+						players[playerID].team = players[i].team;
+					}else{
+						players[i].team = players[playerID].team;
+					}
+					GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " right " + players[playerID].team);
+					GameClient.send("PLAYER "+ i +" "+players[i].getXpos()+" "+players[i].getYpos() + " right " + players[i].team);
 					flag = false;
 				}
 			}
 			
-			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos()+ " right");
-		}	
+			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos()+ " right " + players[playerID].team);
+		}
+		
+		
+		boolean end = true;
+		int[] winner = new int[4];
+		for(int i=1;i<4;i++){
+			winner[i] = 0;
+			if(players[i-1].team != players[i].team){
+				end = false;
+				break;
+				
+			}
+		}
+		
+		for(int i=0;i<4;i++){
+			winner[players[i].team]++;
+		}
+		
+		int max = 0;
+		for(int i=1;i<4;i++){
+			if(winner[i-1] >= winner[i]){
+				max = winner[i-1];
+			}else{
+				max = winner[i];
+			}
+		}
+		
+		EndGame.winner = max;
+		
 
 		
 	}

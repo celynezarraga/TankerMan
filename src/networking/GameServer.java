@@ -22,13 +22,13 @@ public class GameServer implements Runnable, Constants{
 	String playerData;
 	GameState game;
 	int playerCount=0;
-	int numPlayers;
+	public static int numPlayers;
 	long startTime, currTime, elapsedTime;
 	int MAX_TIME = 180;
 	public static int gameStage=WAITING_FOR_PLAYERS;
 	
 	public GameServer(TextField serverConsole, TextField ipPortStringfield){
-		this.numPlayers = 4;
+		this.numPlayers = 2;
 		
 		try {
             serverSocket = new DatagramSocket(1337);
@@ -150,6 +150,7 @@ public class GameServer implements Runnable, Constants{
 						  int x = Integer.parseInt(playerInfo[2].trim());
 						  int y = Integer.parseInt(playerInfo[3].trim());
 						  String character = playerInfo[4];
+						  int team = Integer.parseInt(playerInfo[5].trim());
 						  //Get the player from the game state
 						  //NetPlayer player=(NetPlayer)game.getPlayers().get(pname);					  
 						  //player.setX(x);
@@ -159,7 +160,7 @@ public class GameServer implements Runnable, Constants{
 						  //System.out.println("pname"+pname+"player.X"+player.getX()+"player.Y"+player.getY());
 						  //Send to all the updated game state
 						  
-						  broadcast("PLAYER " + id + " " + x + " " + y + " " + character);
+						  broadcast("PLAYER " + id + " " + x + " " + y + " " + character + " " + team);
 					  }
 					  break;
 			}				  

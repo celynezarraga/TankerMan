@@ -20,7 +20,7 @@ public class InstructionState extends BasicGameState{
 	@Override
 	public void init(GameContainer gc, StateBasedGame sbg)
 			throws SlickException {
-		gmanual = new Image("res/gamemanual.jpg");
+		gmanual = new Image("res/newmanual.png");
 
 		// TODO Auto-generated method stub
 		
