@@ -66,25 +66,20 @@ public class WorldMap extends BasicGameState{
 	public static Boolean enterUp = false;
 
 	int playerID;
+	boolean chatEnabled = false;
 	
 	
-	
-
-	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
+public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		
 		//chat		
 		//map = new Image("res/sample.jpg");
+		System.out.println("playerID: "+ playerID);
 		map = new TiledMap("res/1.tmx");
-		Image[] walkUp = {new Image("res/charBack2.png"),new Image("res/charBack2.png")};
-		Image[] walkDown = {new Image("res/charFront2.png"),new Image("res/charFront2.png")};
-		Image[] walkLeft = {new Image("res/charLeft2.png"),new Image("res/charLeft2.png")};
-		Image[] walkRight = {new Image("res/charRight2.png"),new Image("res/charRight2.png")};
-		
-		moveUp = new Animation(walkUp,duration,false);
-		moveDown = new Animation(walkDown,duration,false);
-		moveLeft = new Animation(walkLeft,duration,false);
-		moveRight = new Animation(walkRight,duration,false);
-		characters[0] = moveDown;
+			// Image[] walkUp = null;
+			// Image[] walkDown = null;
+			// Image[] walkLeft = null;
+			// Image[] walkRight = null;
+
 		
 		bullets = new LinkedList<Bullet>();
 
@@ -98,14 +93,60 @@ public class WorldMap extends BasicGameState{
 	public void enter(GameContainer gc , StateBasedGame sbg)
             throws SlickException
     {
+		 playerID = networking.GameClient.getPlayerID();
+		if(playerID == 0){
+			Image[] walkUp = {new Image("res/charFront0.png"),new Image("res/charFront0.png")};
+			Image[] walkDown = {new Image("res/charBack0.png"),new Image("res/charBack0.png")};
+			Image[] walkLeft = {new Image("res/charLeft0.png"),new Image("res/charLeft0.png")};
+			Image[] walkRight = {new Image("res/charRight0.png"),new Image("res/charRight0.png")};
+			moveUp = new Animation(walkUp,duration,false);
+			moveDown = new Animation(walkDown,duration,false);
+			moveLeft = new Animation(walkLeft,duration,false);
+			moveRight = new Animation(walkRight,duration,false);
+		}
+		else if(playerID == 1){
+			Image[] walkUp = {new Image("res/charFront1.png"),new Image("res/charFront1.png")};
+			Image[] walkDown = {new Image("res/charBack1.png"),new Image("res/charBack1.png")};
+			Image[] walkLeft = {new Image("res/charLeft1.png"),new Image("res/charLeft1.png")};
+			Image[] walkRight = {new Image("res/charRight1.png"),new Image("res/charRight1.png")};
+			moveUp = new Animation(walkUp,duration,false);
+			moveDown = new Animation(walkDown,duration,false);
+			moveLeft = new Animation(walkLeft,duration,false);
+			moveRight = new Animation(walkRight,duration,false);
+		}
+		else if(playerID == 2){
+			Image[] walkUp = {new Image("res/charFront2.png"),new Image("res/charFront2.png")};
+			Image[] walkDown = {new Image("res/charBack2.png"),new Image("res/charBack2.png")};
+			Image[] walkLeft = {new Image("res/charLeft2.png"),new Image("res/charLeft2.png")};
+			Image[] walkRight = {new Image("res/charRight2.png"),new Image("res/charRight2.png")};
+			moveUp = new Animation(walkUp,duration,false);
+			moveDown = new Animation(walkDown,duration,false);
+			moveLeft = new Animation(walkLeft,duration,false);
+			moveRight = new Animation(walkRight,duration,false);
+			
+		}
+		else if(playerID == 3){
+			Image[] walkUp = {new Image("res/charFront3.png"),new Image("res/charFront3.png")};
+			Image[] walkDown = {new Image("res/charBack3.png"),new Image("res/charBack3.png")};
+			Image[] walkLeft = {new Image("res/charLeft3.png"),new Image("res/charLeft3.png")};
+			Image[] walkRight = {new Image("res/charRight3.png"),new Image("res/charRight3.png")};
+			moveUp = new Animation(walkUp,duration,false);
+			moveDown = new Animation(walkDown,duration,false);
+			moveLeft = new Animation(walkLeft,duration,false);
+			moveRight = new Animation(walkRight,duration,false);
+		}
+		
+		characters[0] = moveDown;
+		
 		
 		GameServer.gameStage=Constants.GAME_START;
 		chatMsgsTf = new TextField(gc, gc.getDefaultFont(), 748, 0,243,550);
 		chatMsgsTf.setBorderColor(Color.white);
 		chatFieldTf = new TextField(gc, gc.getDefaultFont(), 748, 500,243,100);
+		chatFieldTf.setCursorVisible(false);
 		chatFieldTf.setBorderColor(Color.red);
 		
-		playerID = networking.GameClient.getPlayerID();
+//		playerID = networking.GameClient.getPlayerID();
 		
 		if(playerID == 0){
 			charPositionX = 1;
@@ -159,7 +200,6 @@ public class WorldMap extends BasicGameState{
 		chatFieldTf.render(gc, g);
 		chatFieldTf.setFocus(true);
 		
-		
 		if(GameClient.getEndGame()){
 			//scoreboard here
 //			System.out.println("TIMES UP!");
@@ -174,14 +214,21 @@ public class WorldMap extends BasicGameState{
 //		GameServer.gameStage=Constants.IN_PROGRESS;
 
 		Input input = gc.getInput();
+		
+		if(input.isKeyDown(Input.KEY_TAB)){
+			chatEnabled = true;
+			chatFieldTf.setFocus(true);
+		}
+		
 		//chat
-		if(input.isKeyDown(Input.KEY_ENTER)){
+		if(input.isKeyDown(Input.KEY_ENTER) && chatEnabled==true){
 			String message = chatFieldTf.getText();
 			
 			if(message != "" && !message.isEmpty()) {
 				chatFieldTf.setText("");
 				networking.ChatClientStarter.send(message);
 			}	
+			chatEnabled = false;
 		}
 
 		int objectLayer = map.getLayerIndex("Objects");
@@ -202,7 +249,8 @@ public class WorldMap extends BasicGameState{
 			
 		}
 		
-		if(gc.getInput().isKeyPressed(Input.KEY_SPACE)){
+		if(gc.getInput().isKeyPressed(Input.KEY_SPACE) && chatEnabled==false){
+			chatFieldTf.setText("");
 			try{
 				if(characters[0] == moveDown){
 					bullets.add(new Bullet(new Vector2f((players[0].getXpos()*30) + 23,(players[0].getYpos()*30) + 30), new Vector2f(0,(players[0].getYpos()*30) + 60),map));
@@ -217,7 +265,7 @@ public class WorldMap extends BasicGameState{
 		}
 		
 		
-		if(input.isKeyPressed(Input.KEY_UP)){
+		if(input.isKeyPressed(Input.KEY_UP) && chatEnabled==false){
 //			send
 			
 //			keyup(objectLayer);
@@ -231,7 +279,7 @@ public class WorldMap extends BasicGameState{
 				GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
 		}
 		
-		if(input.isKeyPressed(Input.KEY_DOWN)){
+		if(input.isKeyPressed(Input.KEY_DOWN) && chatEnabled==false){
 //			keydown(objectLayer);
 			players[0].setChar(moveDown);
 			characters[0] = players[0].getChar();
@@ -244,7 +292,7 @@ public class WorldMap extends BasicGameState{
 			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
 		}
 		
-		if(input.isKeyPressed(Input.KEY_LEFT)){
+		if(input.isKeyPressed(Input.KEY_LEFT) && chatEnabled==false){
 //			keyleft(objectLayer);
 			players[0].setChar(moveLeft);
 			characters[0] = players[0].getChar();
@@ -255,7 +303,7 @@ public class WorldMap extends BasicGameState{
 			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
 		}
 		
-		if(input.isKeyPressed(Input.KEY_RIGHT)){
+		if(input.isKeyPressed(Input.KEY_RIGHT) && chatEnabled==false){
 			players[0].setChar(moveRight);
 			characters[0]= players[0].getChar();
 			players[0].setXpos(players[0].getXpos()+1);
@@ -264,11 +312,6 @@ public class WorldMap extends BasicGameState{
 			}
 			GameClient.send("PLAYER "+ChatClientStarter.playerName+" "+players[0].getXpos()+" "+players[0].getYpos());
 		}	
-		
-		
-		
-		
-
 		
 	}
 	

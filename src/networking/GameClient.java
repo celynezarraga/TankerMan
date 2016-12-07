@@ -104,7 +104,7 @@ public class GameClient implements Runnable, Constants{
 				if(serverData.startsWith("TIME")){
 					String[] timeInfo = serverData.split("-");
 					timeRemaining = timeInfo[1];
-					System.out.println(timeRemaining);
+//					System.out.println(timeRemaining);
 				}
 				if (serverData.startsWith("PLAYER")){
 					String[] playersInfo = serverData.split(":");
