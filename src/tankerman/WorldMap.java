@@ -66,22 +66,24 @@ public class WorldMap extends BasicGameState{
 	public static Boolean enterUp = false;
 
 	int playerID;
+	boolean chatEnabled = false;
 	
+
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
 		
 		//chat		
 		//map = new Image("res/sample.jpg");
+		System.out.println("playerID: "+ playerID);
 		map = new TiledMap("res/1.tmx");
 		Image[] walkUp = {new Image("res/charBack2.png"),new Image("res/charBack2.png")};
 		Image[] walkDown = {new Image("res/charFront2.png"),new Image("res/charFront2.png")};
 		Image[] walkLeft = {new Image("res/charLeft2.png"),new Image("res/charLeft2.png")};
 		Image[] walkRight = {new Image("res/charRight2.png"),new Image("res/charRight2.png")};
-		
+
 		moveUp = new Animation(walkUp,duration,false);
 		moveDown = new Animation(walkDown,duration,false);
 		moveLeft = new Animation(walkLeft,duration,false);
 		moveRight = new Animation(walkRight,duration,false);
-		characters[0] = moveDown;
 		
 		bullets = new LinkedList<Bullet>();
 
@@ -92,17 +94,21 @@ public class WorldMap extends BasicGameState{
 //		}
 		
 	}
-	public void enter(GameContainer gc , StateBasedGame sbg)
-            throws SlickException
-    {
+	public void enter(GameContainer gc , StateBasedGame sbg) throws SlickException{
+		 playerID = networking.GameClient.getPlayerID();
+		
+		
+//		characters[0] = moveDown;
+		
 		
 		GameServer.gameStage=Constants.GAME_START;
 		chatMsgsTf = new TextField(gc, gc.getDefaultFont(), 748, 0,243,550);
 		chatMsgsTf.setBorderColor(Color.white);
 		chatFieldTf = new TextField(gc, gc.getDefaultFont(), 748, 500,243,100);
+		chatFieldTf.setCursorVisible(false);
 		chatFieldTf.setBorderColor(Color.red);
 		
-		playerID = networking.GameClient.getPlayerID();
+
 
 		players[0] = new Tank("p1",moveDown,0);
 		players[0].setXpos(1);
@@ -123,6 +129,7 @@ public class WorldMap extends BasicGameState{
 		for(int i=0;i<4;i++){
 			characters[i] = players[i].getChar();
 		}
+		
     }
 	
 
@@ -152,7 +159,6 @@ public class WorldMap extends BasicGameState{
 		chatFieldTf.render(gc, g);
 		chatFieldTf.setFocus(true);
 		
-		
 		if(GameClient.getEndGame()){
 			//scoreboard here
 //			System.out.println("TIMES UP!");
@@ -163,14 +169,21 @@ public class WorldMap extends BasicGameState{
 	public void update(GameContainer gc, StateBasedGame sbg, int t) throws SlickException {
 //		GameServer.gameStage=Constants.IN_PROGRESS;
 		Input input = gc.getInput();
+		
+		if(input.isKeyDown(Input.KEY_TAB)){
+			chatEnabled = true;
+			chatFieldTf.setFocus(true);
+		}
+		
 		//chat
-		if(input.isKeyDown(Input.KEY_ENTER)){
+		if(input.isKeyDown(Input.KEY_ENTER) && chatEnabled==true){
 			String message = chatFieldTf.getText();
 			
 			if(message != "" && !message.isEmpty()) {
 				chatFieldTf.setText("");
 				networking.ChatClientStarter.send(message);
 			}	
+			chatEnabled = false;
 		}
 
 		int objectLayer = map.getLayerIndex("Objects");
@@ -194,7 +207,8 @@ public class WorldMap extends BasicGameState{
 			
 		}
 		
-		if(gc.getInput().isKeyPressed(Input.KEY_SPACE)){
+		if(gc.getInput().isKeyPressed(Input.KEY_SPACE) && chatEnabled==false){
+			chatFieldTf.setText("");
 			try{
 				if(characters[playerID] == moveDown){
 					bullets.add(new Bullet(new Vector2f((players[playerID].getXpos()*30) + 23,(players[playerID].getYpos()*30) + 30), new Vector2f(0,(players[0].getYpos()*30) + 60),map));
@@ -209,7 +223,7 @@ public class WorldMap extends BasicGameState{
 		}
 		
 		
-		if(input.isKeyPressed(Input.KEY_UP)){
+		if(input.isKeyPressed(Input.KEY_UP) && chatEnabled==false){
 //			send
 			
 //			keyup(objectLayer);
@@ -223,7 +237,7 @@ public class WorldMap extends BasicGameState{
 				GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " up");
 		}
 		
-		if(input.isKeyPressed(Input.KEY_DOWN)){
+		if(input.isKeyPressed(Input.KEY_DOWN) && chatEnabled==false){
 //			keydown(objectLayer);
 			players[playerID].setChar(moveDown);
 			characters[playerID] = players[playerID].getChar();
@@ -236,7 +250,7 @@ public class WorldMap extends BasicGameState{
 			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " down");
 		}
 		
-		if(input.isKeyPressed(Input.KEY_LEFT)){
+		if(input.isKeyPressed(Input.KEY_LEFT) && chatEnabled==false){
 //			keyleft(objectLayer);
 			players[playerID].setChar(moveLeft);
 			characters[playerID] = players[playerID].getChar();
@@ -247,7 +261,8 @@ public class WorldMap extends BasicGameState{
 			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos() + " left");
 		}
 		
-		if(input.isKeyPressed(Input.KEY_RIGHT)){
+		if(input.isKeyPressed(Input.KEY_RIGHT) && chatEnabled==false){
+			
 			players[playerID].setChar(moveRight);
 			characters[playerID]= players[playerID].getChar();
 			players[playerID].setXpos(players[playerID].getXpos()+1);
@@ -257,40 +272,35 @@ public class WorldMap extends BasicGameState{
 			GameClient.send("PLAYER "+ playerID +" "+players[playerID].getXpos()+" "+players[playerID].getYpos()+ " right");
 		}	
 		
-		
-		
-		
-
-		
 	}
 	
-	public void keyup(int objectLayer){
-		playerID = networking.GameClient.getPlayerID();
-		players[playerID].setChar(moveUp);
-		characters[playerID] = players[playerID].getChar();
-		players[playerID].setYpos(players[playerID].getYpos()-1);
-			if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
-				players[playerID].setYpos(players[playerID].getYpos()+1);
-			}
-	}
-	public void keydown(int objectLayer){
-		playerID = networking.GameClient.getPlayerID();
-		players[playerID].setChar(moveDown);
-		characters[playerID] = players[playerID].getChar();
-		players[playerID].setYpos(players[playerID].getYpos()+1);
-		if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
-			players[0].setYpos(players[0].getYpos()-1);
-		}
-	}
-	public void keyleft(int objectLayer){
-		playerID = networking.GameClient.getPlayerID();
-		players[playerID].setChar(moveLeft);
-		characters[playerID] = players[playerID].getChar();
-		players[playerID].setXpos(players[playerID].getXpos()-1);
-		if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
-			players[playerID].setXpos(players[playerID].getXpos()+1);
-		}
-	}
+	// public void keyup(int objectLayer){
+	// 	playerID = networking.GameClient.getPlayerID();
+	// 	players[playerID].setChar(moveUp);
+	// 	characters[playerID] = players[playerID].getChar();
+	// 	players[playerID].setYpos(players[playerID].getYpos()-1);
+	// 		if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+	// 			players[playerID].setYpos(players[playerID].getYpos()+1);
+	// 		}
+	// }
+	// public void keydown(int objectLayer){
+	// 	playerID = networking.GameClient.getPlayerID();
+	// 	players[playerID].setChar(moveDown);
+	// 	characters[playerID] = players[playerID].getChar();
+	// 	players[playerID].setYpos(players[playerID].getYpos()+1);
+	// 	if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+	// 		players[0].setYpos(players[0].getYpos()-1);
+	// 	}
+	// }
+	// public void keyleft(int objectLayer){
+	// 	playerID = networking.GameClient.getPlayerID();
+	// 	players[playerID].setChar(moveLeft);
+	// 	characters[playerID] = players[playerID].getChar();
+	// 	players[playerID].setXpos(players[playerID].getXpos()-1);
+	// 	if(map.getTileId(players[playerID].getXpos(),players[playerID].getYpos() , objectLayer) != 0){
+	// 		players[playerID].setXpos(players[playerID].getXpos()+1);
+	// 	}
+	// }
 	
 
 	public int getID() {

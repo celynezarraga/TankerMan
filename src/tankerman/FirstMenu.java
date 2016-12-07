@@ -19,11 +19,13 @@ public class FirstMenu extends BasicGameState{
 	}
 
 	public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
-		menu = new Image("res/GameMenu.png");
+		menu = new Image("res/Menu.png");
 	}
 
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
 		menu.draw(0,0);
+//		g.drawString("Instruction", 100, 650);
+
 	}
 
 	public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
@@ -31,7 +33,12 @@ public class FirstMenu extends BasicGameState{
 		this.posY = Mouse.getY();
 		
 //		System.out.println("X: " + posX + " Y: " + posY );
-		
+		//instructions
+//		if((posX>100 && posX<200) && (posY>100 && posY<200)){
+//			if(Mouse.isButtonDown(0)){
+//				sbg.enterState(6);
+//			}
+//		}
 		if((posX>363 && posX<638) && (posY>270 && posY<335)){
 			if(Mouse.isButtonDown(0)){
 				System.out.println("SERVER");
@@ -50,7 +57,7 @@ public class FirstMenu extends BasicGameState{
 		
 		if((posX>363 && posX<638) && (posY>103 && posY<168)){
 			if(Mouse.isButtonDown(0)){
-				sbg.enterState(1); //worldmap
+				sbg.enterState(6);//instruction
 			}
 		}
 	}

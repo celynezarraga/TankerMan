@@ -28,16 +28,35 @@ public class GameClient implements Runnable, Constants{
 	
 	private int[] duration = {200,200};
 	
-	private Image[] walkUp = {new Image("res/charBack2.png"),new Image("res/charBack2.png")};
-	private Image[] walkDown = {new Image("res/charFront2.png"),new Image("res/charFront2.png")};
-	private Image[] walkLeft = {new Image("res/charLeft2.png"),new Image("res/charLeft2.png")};
-	private Image[] walkRight = {new Image("res/charRight2.png"),new Image("res/charRight2.png")};
+	private Image[] walkUp;
+	private Image[] walkDown;
+	private Image[] walkLeft;
+	private Image[] walkRight;
 
+	private Image[] walkUp1 = {new Image("res/charFront0.png"),new Image("res/charFront0.png")};
+	private Image[] walkDown1 = {new Image("res/charBack0.png"),new Image("res/charBack0.png")};
+	private Image[] walkLeft1 = {new Image("res/charLeft0.png"),new Image("res/charLeft0.png")};
+	private Image[] walkRight1 = {new Image("res/charRight0.png"),new Image("res/charRight0.png")};
 	
-	private Animation moveUp = new Animation(walkUp,duration,false);
-	private Animation moveDown = new Animation(walkDown,duration,false);
-	private Animation moveLeft = new Animation(walkLeft,duration,false);
-	private Animation moveRight = new Animation(walkRight,duration,false);
+	private Image[] walkUp2 = {new Image("res/charFront1.png"),new Image("res/charFront1.png")};
+	private Image[] walkDown2 = {new Image("res/charBack1.png"),new Image("res/charBack1.png")};
+	private Image[] walkLeft2 = {new Image("res/charLeft1.png"),new Image("res/charLeft1.png")};
+	private Image[] walkRight2 = {new Image("res/charRight1.png"),new Image("res/charRight1.png")};
+	
+	private Image[] walkUp3 = {new Image("res/charFront2.png"),new Image("res/charFront2.png")};
+	private Image[] walkDown3 = {new Image("res/charBack2.png"),new Image("res/charBack2.png")};
+	private Image[] walkLeft3 = {new Image("res/charLeft2.png"),new Image("res/charLeft2.png")};
+	private Image[] walkRight3 = {new Image("res/charRight2.png"),new Image("res/charRight2.png")};
+	
+	private Image[] walkUp4 = {new Image("res/charFront3.png"),new Image("res/charFront3.png")};
+	private Image[] walkDown4 = {new Image("res/charBack3.png"),new Image("res/charBack3.png")};
+	private Image[] walkLeft4 = {new Image("res/charLeft3.png"),new Image("res/charLeft3.png")};
+	private Image[] walkRight4 = {new Image("res/charRight3.png"),new Image("res/charRight3.png")};
+	
+	private Animation moveUp;
+	private Animation moveDown;
+	private Animation moveLeft;
+	private Animation moveRight;
 	
 	
 	
@@ -83,6 +102,37 @@ public class GameClient implements Runnable, Constants{
 				String[] tokens = serverData.split("-");
 				playerID = Integer.parseInt(tokens[1]);
 				System.out.println("ID : " + playerID);
+				
+				if(playerID == 0){
+					walkUp = walkUp1;
+					walkDown = walkDown1;
+					walkRight = walkRight1;
+					walkLeft = walkLeft1;
+				}
+				else if(playerID == 1){
+					walkUp = walkUp2;
+					walkDown = walkDown2;
+					walkRight = walkRight2;
+					walkLeft = walkLeft2;
+				}
+				else if(playerID == 2){
+					walkUp = walkUp3;
+					walkDown = walkDown3;
+					walkRight = walkRight3;
+					walkLeft = walkLeft3;
+				}
+				else if(playerID == 3){
+					walkUp = walkUp4;
+					walkDown = walkDown4;
+					walkRight = walkRight4;
+					walkLeft = walkLeft4;
+				}
+				
+				moveUp = new Animation(walkUp,duration,false);
+				moveDown = new Animation(walkDown,duration,false);
+				moveLeft = new Animation(walkLeft,duration,false);
+				moveRight = new Animation(walkRight,duration,false);
+				
 			}else if (!connected){
 				System.out.println("Connecting..");				
 				send("CONNECT "+name);
@@ -98,8 +148,7 @@ public class GameClient implements Runnable, Constants{
 				if(serverData.startsWith("TIME")){
 					String[] timeInfo = serverData.split("-");
 					timeRemaining = timeInfo[1];
-					//System.out.println(timeRemaining);
-				}
+					}
 				if (serverData.startsWith("PLAYER")){
 					String[] playersInfo = serverData.split(":");
 					for (int i=0;i<playersInfo.length;i++){
