@@ -159,15 +159,63 @@ public class GameClient implements Runnable, Constants{
 						WorldMap.players[id].setYpos(y);
 						
 						if(character.equals("up")){
+							if(id==0){
+								moveUp = new Animation(walkUp1,duration,false);
+							}
+							else if(id==1){
+								moveUp = new Animation(walkUp2,duration,false);
+							}
+							else if(id==2){
+								moveUp = new Animation(walkUp3,duration,false);
+							}
+							else if(id==3){
+								moveUp = new Animation(walkUp4,duration,false);
+							}
 							WorldMap.players[id].setChar(moveUp);
 							WorldMap.characters[id] = WorldMap.players[id].getChar();
 						}else if(character.equals("down")){
+							if(id==0){
+								moveDown = new Animation(walkDown1,duration,false);
+							}
+							else if(id==1){
+								moveDown = new Animation(walkDown2,duration,false);
+							}
+							else if(id==2){
+								moveDown = new Animation(walkDown3,duration,false);
+							}
+							else if(id==3){
+								moveDown = new Animation(walkDown4,duration,false);
+							}
 							WorldMap.players[id].setChar(moveDown);
 							WorldMap.characters[id] = WorldMap.players[id].getChar();
 						}else if(character.equals("left")){
+							if(id==0){
+								moveLeft = new Animation(walkLeft1,duration,false);
+							}
+							else if(id==1){
+								moveLeft = new Animation(walkLeft2,duration,false);
+							}
+							else if(id==2){
+								moveLeft = new Animation(walkLeft3,duration,false);
+							}
+							else if(id==3){
+								moveLeft = new Animation(walkLeft4,duration,false);
+							}
 							WorldMap.players[id].setChar(moveLeft);
 							WorldMap.characters[id] = WorldMap.players[id].getChar();
 						}else if(character.equals("right")){
+							if(id==0){
+								moveRight = new Animation(walkRight1,duration,false);
+							}
+							else if(id==1){
+								moveRight = new Animation(walkRight2,duration,false);
+							}
+							else if(id==2){
+								moveRight = new Animation(walkRight3,duration,false);
+							}
+							else if(id==3){
+								moveRight = new Animation(walkRight4,duration,false);
+							}
 							WorldMap.players[id].setChar(moveRight);
 							WorldMap.characters[id] = WorldMap.players[id].getChar();
 						}

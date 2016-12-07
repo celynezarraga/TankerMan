@@ -60,7 +60,7 @@ public class ClientState extends BasicGameState{
 
 	@Override
 	public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
-		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 20);
+//		g.drawString("CharacterX: " + posX + " CharY: " + posY , 400, 20);
 		connectionInfoField.render(gc, g);
 		if (!connected){
 			g.drawString("Enter username", 200, 180);
