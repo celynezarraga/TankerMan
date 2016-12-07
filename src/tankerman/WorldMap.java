@@ -181,19 +181,6 @@ public class WorldMap extends BasicGameState{
 		
 		map.render(0,0);
 		for(int i=0;i<2;i++){
-			//update animations/pics
-			ArrayList<Image[]> currentTank = new ArrayList<Image[]>();
-			currentTank = players[i].getAnimations();
-			Image[] walkUp = currentTank.get(0);
-			Image[] walkDown = currentTank.get(1);
-			Image[] walkLeft = currentTank.get(2);
-			Image[] walkRight = currentTank.get(3);
-			
-			moveUp = new Animation(walkUp,duration,false);
-			moveDown = new Animation(walkDown,duration,false);
-			moveLeft = new Animation(walkLeft,duration,false);
-			moveRight = new Animation(walkRight,duration,false);
-			
 			characters[i].draw(players[i].getXpos() * 30,players[i].getYpos() * 30);
 		}
 		//characters[0].draw(players[0].getXpos() * 30, players[0].getYpos() * 30);
